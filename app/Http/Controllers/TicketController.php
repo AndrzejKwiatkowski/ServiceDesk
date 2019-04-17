@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Ticekt;
+use App\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class TicketController extends Controller
 {
@@ -14,7 +16,8 @@ class TicketController extends Controller
      */
     public function index()
     {
-        return view('ticket.tickets');
+        $tickets = Ticket::paginate(10);
+        return view('ticket.index', ['tickets' =>$tickets]);
     }
 
     /**
@@ -24,7 +27,7 @@ class TicketController extends Controller
      */
     public function create()
     {
-        //
+        return view('ticket.create');
     }
 
     /**
@@ -35,7 +38,12 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $ticket = new Ticket();
+            $ticket->title = $request['title'];
+            $ticket->body = $request['body'];
+            $ticket->priorytet = $request['priorytet'];
+        $ticket->save();
+        return redirect('tickets');
     }
 
     /**
