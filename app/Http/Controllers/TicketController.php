@@ -14,10 +14,10 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Ticket $tickets)
     {
         $tickets = Ticket::paginate(10);
-        return view('ticket.index', ['tickets' =>$tickets]);
+        return view('ticket.index', compact('tickets'));
     }
 
     /**
@@ -52,9 +52,10 @@ class TicketController extends Controller
      * @param  \App\Ticekt  $ticekt
      * @return \Illuminate\Http\Response
      */
-    public function show(Ticekt $ticekt)
+    public function show(Ticket $ticket)
     {
-        //
+        //$ticket = Ticket::find($ticket->id);
+        return view('ticket.show', compact('ticket'));
     }
 
     /**
@@ -63,9 +64,10 @@ class TicketController extends Controller
      * @param  \App\Ticekt  $ticekt
      * @return \Illuminate\Http\Response
      */
-    public function edit(Ticekt $ticekt)
+    public function edit(Ticket $ticket)
+
     {
-        //
+        return view('ticket.edit', compact('ticket'));
     }
 
     /**
@@ -75,9 +77,10 @@ class TicketController extends Controller
      * @param  \App\Ticekt  $ticekt
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Ticekt $ticekt)
+    public function update(Request $request, Ticket $ticket)
     {
-        //
+        $ticket->update(request(['title', 'body' , 'priorytet']));
+        return redirect('/tickets');
     }
 
     /**
@@ -86,8 +89,10 @@ class TicketController extends Controller
      * @param  \App\Ticekt  $ticekt
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Ticekt $ticekt)
+    public function destroy(Ticket $ticket)
     {
-        //
+        
+        $ticket->delete();
+        return redirect('/tickets');
     }
 }
