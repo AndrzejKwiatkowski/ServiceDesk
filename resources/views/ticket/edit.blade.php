@@ -23,5 +23,5 @@
             <div class="form-group">
                 <button type="submit" class="btn btn-outline-primary">Zapisz zmiany</button>
             </div>
-          </form>
+    </form>
 @endsection

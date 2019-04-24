@@ -5,10 +5,15 @@ namespace App\Http\Controllers;
 use App\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Foundation\Auth\User;
+use Auth;
 
 class TicketController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['index']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,8 +21,10 @@ class TicketController extends Controller
      */
     public function index(Ticket $tickets)
     {
+        //dd(Auth::user()->email);
         $tickets = Ticket::paginate(10);
         return view('ticket.index', compact('tickets'));
+
     }
 
     /**
@@ -38,11 +45,12 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        $ticket = new Ticket();
-            $ticket->title = $request['title'];
-            $ticket->body = $request['body'];
-            $ticket->priorytet = $request['priorytet'];
-        $ticket->save();
+        // $ticket = new Ticket();
+        //     $ticket->title = $request['title'];
+        //     $ticket->body = $request['body'];
+        //     $ticket->priorytet = $request['priorytet'];
+        // $ticket->save();
+        $ticket = Ticket::create($request->all());
         return redirect('tickets');
     }
 
@@ -79,6 +87,7 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
+        
         $ticket->update(request(['title', 'body' , 'priorytet']));
         return redirect('/tickets');
     }
@@ -91,7 +100,7 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-        
+
         $ticket->delete();
         return redirect('/tickets');
     }
