@@ -3,28 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Ticket;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User;
 use Auth;
+use Illuminate\Support\Facades\View;
+
+
 
 class TicketController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index']]);
+        $this->middleware('auth');
+        //$this->middleware('auth', ['except' => ['index']]);
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Ticket $tickets)
+    public function index(Ticket $tickets, Request $request)
     {
-        //dd(Auth::user()->email);
-        $tickets = Ticket::paginate(10);
-        return view('ticket.index', compact('tickets'));
 
+        //$ticket = Ticket::with('user')->get();
+        //dd($ticket);
+        $tickets = Ticket::with('user')->paginate(10);
+        //dd($tickets);
+
+
+        return view('ticket.index', compact('tickets'));
     }
 
     /**
@@ -45,12 +54,18 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        // $ticket = new Ticket();
-        //     $ticket->title = $request['title'];
-        //     $ticket->body = $request['body'];
-        //     $ticket->priorytet = $request['priorytet'];
-        // $ticket->save();
-        $ticket = Ticket::create($request->all());
+
+        $ticket = new Ticket();
+        $ticket->title = $request['title'];
+        $ticket->body = $request['body'];
+        $ticket->priorytet = $request['priorytet'];
+        // działa $ticket->user()->associate($request->user());
+        $ticket->user_id = $request->user()->id;
+        $ticket->save();
+
+
+
+        //  $ticket = Ticket::create($request->all());
         return redirect('tickets');
     }
 
@@ -87,11 +102,21 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
-        
-        $ticket->update(request(['title', 'body' , 'priorytet']));
+
+        $ticket->update(request(['title', 'body', 'priorytet', 'user_id']));
         return redirect('/tickets');
     }
 
+    public function ticketuser(User $user)
+    {
+
+        $userlogged = User::find($user->id);
+
+        $tickets = Ticket::where("user_id", "=", $userlogged->id)->get();
+
+
+        return View::make('ticket.ticketuser')->with(array('user' => $user, 'tickets' => $tickets));
+    }
     /**
      * Remove the specified resource from storage.
      *

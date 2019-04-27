@@ -18,11 +18,8 @@
     @foreach ($tickets as $ticket)
       <tr>
         <td>{{$ticket->id}}</td>
-        <td>{{$ticket->user->name}}</td>
 
-
-
-
+        <td>{{$user->name}}</td>
 
 
         <td>{{$ticket->title}}</td>
@@ -39,6 +36,6 @@
     @endforeach
     </tbody>
   </table>
-  {{ $tickets->links() }}
+
 
   @endsection

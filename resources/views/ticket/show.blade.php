@@ -3,6 +3,7 @@
 
 <div class="container">
 <h4 class="mt-5"> Numer zgłoszenia: {{$ticket->id}}</h4>
+<p>Klient: {{$ticket->user->name}}</p>
 <p>Tytuł: {{$ticket->title}}</p>
 <p>Opis: {{$ticket->body}}</p>
 <p>Status: {{$ticket->status}}</p>

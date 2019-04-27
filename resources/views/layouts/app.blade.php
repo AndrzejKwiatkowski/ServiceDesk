@@ -63,12 +63,16 @@
                                          document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}
                         </a>
+                        <a class="dropdown-item" href="{{url('tickets/ticketuser/' . Auth::user()->id) }}">Moje zgłoszenia</a>
 
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
                     </div>
+
                 </li>
+
+
             @endguest
         </ul>
         </div>
