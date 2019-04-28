@@ -19,4 +19,7 @@ return view('welcome');
 Auth::routes();
 Route::get('tickets/ticketuser/{user}', 'TicketController@ticketuser')->name('ticketuser');
 
+
+
 Route::resource('tickets', 'TicketController');
+Route::resource('tickets/{ticket}/comments/{comment}', 'CommentController');

@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Ticket;
+use App\Comment;
 
 class User extends Authenticatable
 {
@@ -41,6 +42,6 @@ class User extends Authenticatable
 
     public function tickets()
     {
-        return $this->hasMany('Ticket');
+        return $this->hasMany(Comment::class);
     }
 }

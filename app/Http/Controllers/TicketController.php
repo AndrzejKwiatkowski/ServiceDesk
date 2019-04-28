@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User;
 use Auth;
 use Illuminate\Support\Facades\View;
-
-
+use App\Comment;
 
 class TicketController extends Controller
 {
@@ -77,8 +76,12 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        //$ticket = Ticket::find($ticket->id);
-        return view('ticket.show', compact('ticket'));
+
+       // $tickets = $ticket->comments()->get();
+        $comments = $ticket->comments()->with('user')->get();
+
+      //dd($comments);
+        return view('ticket.show', compact('ticket', 'comments'));
     }
 
     /**

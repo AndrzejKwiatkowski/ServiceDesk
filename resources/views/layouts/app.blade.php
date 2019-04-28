@@ -81,5 +81,6 @@
     <div class="container">
     <div>
         @yield('content')
+        
 </body>
 </html>
