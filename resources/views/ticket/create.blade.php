@@ -24,6 +24,5 @@
             <button type="submit" class="btn btn-outline-primary">Utwórz zgłoszenie</button>
         </div>
       </form>
-
 @endsection
 

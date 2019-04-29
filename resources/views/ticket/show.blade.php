@@ -18,7 +18,7 @@
 </form>
 </div>
 
-<a class="btn btn-outline-secondary mt-5" href="">Dodaj notatkę</a>
+<h3 class="mt-5">Komentarze do zgłoszenia</h3>
 
 
 @foreach ($comments as $comment)
@@ -26,14 +26,15 @@
 <ul class="list-unstyled mt-5">
         <li class="media">
           <div class="media-body">
-          <h5 class="mt-0 mb-1">Tytuł: {{$comment->title}}</h5>
-          Notatka: {{$comment->body}}
-
+          <h5 class="mt-0 mb-1">Autor: {{$comment->user->name}}</h5>
+          Komentarze: {{$comment->body}}
           </div>
-        <div class="mt-0 mb-1">Autor: {{$comment->user->email}}</div>
         </li>
       </ul>
 
-      @endforeach
-
+@endforeach
+@include('comment.create')
 @endsection
+
+
+

@@ -22,4 +22,4 @@ Route::get('tickets/ticketuser/{user}', 'TicketController@ticketuser')->name('ti
 
 
 Route::resource('tickets', 'TicketController');
-Route::resource('tickets/{ticket}/comments/{comment}', 'CommentController');
+Route::resource('tickets/{ticket}/comments', 'CommentController');
