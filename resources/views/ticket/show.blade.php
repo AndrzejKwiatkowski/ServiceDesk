@@ -18,9 +18,34 @@
 </form>
 </div>
 
+
+<form method="POST" action="{{$ticket->id}}/attachments" enctype="multipart/form-data">
+    @csrf
+    @method('POST')
+
+
+        <div class="form-group">
+          <label for="exampleFormControlFile1">Dodaj załącznik</label>
+          <input type="file" class="form-control-file" id="exampleFormControlFile1" name="plik">
+        </div>
+        <button type="submit" class="btn btn-primary">Wyślij załącznik</button>
+</form>
+<h3>Załączniki do zgłoszenia</h3>
+@foreach ($ticket->attachments as $attachment)
+
+
+<table>
+    <th>
+        <tr>
+            <td>
+                <a href="{{asset('storage/attachments/' . $attachment->orginal_name)}}" download>{{$attachment->orginal_name}}</a>
+            </td>
+        </tr>
+    </th>
+</table>
+@endforeach
+
 <h3 class="mt-5">Komentarze do zgłoszenia</h3>
-
-
 @foreach ($comments as $comment)
 
 <ul class="list-unstyled mt-5">
@@ -35,6 +60,7 @@
 @endforeach
 @include('comment.create')
 @endsection
+
 
 
 

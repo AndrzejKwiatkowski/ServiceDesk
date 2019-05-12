@@ -2,24 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Comment;
 use Illuminate\Http\Request;
+use App\Attachment;
 use App\Ticket;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use App\User;
 
-class CommentController extends Controller
+
+class AttachmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Ticket $tickets, Comment $comments)
+    public function index(Ticket $ticket)
     {
-        $tickets = Ticket::all();
-        $comments = Comment::all();
-        return view('comment.index', compact('tickets', 'comments'));
+        $attachments = $ticket->attachments;
+
+        return view('attachment.show', compact('attachments'));
+
+
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -27,7 +33,9 @@ class CommentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    { }
+    {
+        //
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -37,37 +45,38 @@ class CommentController extends Controller
      */
     public function store(Request $request, Ticket $ticket)
     {
+        //dd($request->plik);
+        $request->plik->storeAs('attachments', $request->plik->getClientOriginalName());
 
-        $comment = new Comment();
-
-        $comment->body = $request['body'];
-        $comment->user_id = Auth::user()->id;
-        $comment->ticket_id = $ticket->id;
-        $comment->save();
-
+        $attachment = new Attachment;
+        $attachment->orginal_name = $request->plik->getClientOriginalName();
+        $attachment->name = $request->plik->getClientOriginalName();
+        $attachment->user_id = Auth::user()->id;
+        $attachment->ticket_id = $ticket->id;
+        $attachment->save();
 
         return back();
-
     }
+
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Comment  $comment
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Comment $comment)
+    public function show()
     {
-        //
+
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Comment  $comment
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Comment $comment)
+    public function edit($id)
     {
         //
     }
@@ -76,10 +85,10 @@ class CommentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Comment  $comment
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -87,10 +96,10 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Comment  $comment
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function destroy($id)
     {
         //
     }

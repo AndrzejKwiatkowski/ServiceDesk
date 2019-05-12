@@ -18,6 +18,8 @@ return view('welcome');
 
 Auth::routes();
 Route::get('tickets/ticketuser/{user}', 'TicketController@ticketuser')->name('ticketuser');
+Route::resource('tickets/{ticket}/attachments', 'AttachmentController');
+
 
 
 
