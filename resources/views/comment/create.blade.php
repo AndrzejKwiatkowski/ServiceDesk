@@ -1,3 +1,4 @@
+<div class="col-md-offset-2 col-md-10">
 <form method="POST" action="{{url('tickets/' . $ticket->id . '/comments')}}">
     @csrf
     @method('POST')
@@ -10,4 +11,4 @@
             <button type="submit" class="btn btn-outline-primary">Dodaj komentarz</button>
         </div>
 </form>
-
+</div>

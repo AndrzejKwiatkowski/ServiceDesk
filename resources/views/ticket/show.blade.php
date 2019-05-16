@@ -1,66 +1,79 @@
-@extends('layouts.app')
-@section('content')
-
-<div class="container">
-<h4 class="mt-5"> Numer zgłoszenia: {{$ticket->id}}</h4>
-<p>Klient: {{$ticket->user->name}}</p>
-<p>Tytuł: {{$ticket->title}}</p>
-<p>Opis: {{$ticket->body}}</p>
-<p>Status: {{$ticket->status}}</p>
-<p>Priorytet: <strong>{{$ticket->priorytet}}</strong> </p>
+@extends('layouts.app') @section('content')
+<h4 class="mt-5">Numer zgłoszenia: {{$ticket->id}}</h4>
+<form method="POST" action="/tickets/{{$ticket->id}}/change">
+    {{ csrf_field() }}
+    {{ method_field('put') }}
+    <button type="submit" name="status" value="close" class="btn btn-outline-danger btn-sm">
+        Zmien status
+    </button>
+</form>
 <div class="row">
-    <a class="btn btn-outline-primary mr-2" href="{{url('tickets/' . $ticket->id . '/edit')}}">Edytuj</a>
-    <form method="POST" action="/tickets/{{$ticket->id}}">
-    {{ csrf_field()}}
-    {{method_field('DELETE')}}
-    <button type="submit" class="btn btn-outline-danger">Usuń</button>
+    <div class="col">
+        <p>Klient: {{$ticket->user->name}}</p>
+        <p>Tytuł: {{$ticket->title}}</p>
+        <p>Opis: {{$ticket->body}}</p>
+        <p>Status: {{$ticket->status}}</p>
+        <p>Priorytet:<strong>{{$ticket->priorytet}}</strong></p>
+
+        <a class="btn btn-outline-primary btn-sm mb-2" href="{{url('tickets/' . $ticket->id . '/edit')}}">Edytuj</a>
+        <form method="POST" action="/tickets/{{$ticket->id}}">
+            {{ csrf_field() }}
+            {{ method_field("DELETE") }}
+            <button type="submit" class="btn btn-outline-danger btn-sm">
+                Usuń
+            </button>
+        </form>
+
+
+
+    </div>
+    <div class="col">
+        <form method="POST" action="{{$ticket->id}}/attachments" enctype="multipart/form-data">
+            @csrf @method('POST')
+
+            <div class="form-group row">
+                <input class="col" type="file" class="form-control-file" id="exampleFormControlFile1" name="plik" />
+
+                <button type="submit" class="btn btn-primary btn-sm">
+                    Wyślij załącznik
+                </button>
+            </div>
+        </form>
+        <h3>Załączniki do zgłoszenia</h3>
+        @foreach ($ticket->attachments as $attachment)
+
+        <table>
+            <th>
+                <tr>
+                    <td>
+                        <a href="{{asset('storage/attachments/' . $attachment->orginal_name)}}"
+                            download>{{$attachment->orginal_name}}</a>
+                    </td>
+                    <td>{{$attachment->created_at}}</td>
+                    <td>
+                        a
+                    </td>
+                </tr>
+            </th>
+        </table>
+        @endforeach
+
+    </div>
 </div>
-</form>
-</div>
-
-
-<form method="POST" action="{{$ticket->id}}/attachments" enctype="multipart/form-data">
-    @csrf
-    @method('POST')
-
-
-        <div class="form-group">
-          <label for="exampleFormControlFile1">Dodaj załącznik</label>
-          <input type="file" class="form-control-file" id="exampleFormControlFile1" name="plik">
-        </div>
-        <button type="submit" class="btn btn-primary">Wyślij załącznik</button>
-</form>
-<h3>Załączniki do zgłoszenia</h3>
-@foreach ($ticket->attachments as $attachment)
-
-
-<table>
-    <th>
-        <tr>
-            <td>
-                <a href="{{asset('storage/attachments/' . $attachment->orginal_name)}}" download>{{$attachment->orginal_name}}</a>
-            </td>
-        </tr>
-    </th>
-</table>
-@endforeach
 
 <h3 class="mt-5">Komentarze do zgłoszenia</h3>
 @foreach ($comments as $comment)
 
-<ul class="list-unstyled mt-5">
-        <li class="media">
-          <div class="media-body">
-          <h5 class="mt-0 mb-1">Autor: {{$comment->user->name}}</h5>
-          Komentarze: {{$comment->body}}
-          </div>
-        </li>
-      </ul>
+<ul class="list-unstyled mt-5 col-md-offset-2 col-md-10">
+    <li class="media">
+        <div class="media-body">
+            <h5 class="mt-0 mb-1">Autor: {{$comment->user->name}}</h5>
+            Komentarze: {{$comment->body}}
+        </div>
+    </li>
+</ul>
 
 @endforeach
+
 @include('comment.create')
 @endsection
-
-
-
-

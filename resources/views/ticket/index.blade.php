@@ -16,27 +16,22 @@
     </thead>
     <tbody>
     @foreach ($tickets as $ticket)
+    @if($ticket->status == 'open')
       <tr>
         <td>{{$ticket->id}}</td>
         <td>{{$ticket->user->name}}</td>
-
-
-
-
-
-
         <td>{{$ticket->title}}</td>
         <td>{{$ticket->body}}</td>
         <td class="{{$ticket->status == 'open' ? 'text-primary' : 'text-danger'}}">{{$ticket->status}}</td>
         <td class="">{{$ticket->priorytet}}</td>
         <td>{{$ticket->created_at}}</td>
         <td>{{$ticket->updated_at}}</td>
-        {{-- <td><button href="{{url('tickets/' . $ticket->id)}})" class="btn btn-primary">Otwórz</button></td> --}}
         <td><a class="btn btn-outline-dark" href="{{url('tickets/' . $ticket->id)}}" role="button">Otwórz
         </a></td>
     </tr>
-
+    @endif
     @endforeach
+
     </tbody>
   </table>
   {{ $tickets->links() }}

@@ -8,7 +8,7 @@ use App\Ticket;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\User;
-
+use Illuminate\Support\Facades\Storage;
 
 class AttachmentController extends Controller
 {
@@ -46,11 +46,12 @@ class AttachmentController extends Controller
     public function store(Request $request, Ticket $ticket)
     {
         //dd($request->plik);
-        $request->plik->storeAs('attachments', $request->plik->getClientOriginalName());
+        $request->plik->storeAs('attachments', $request->plik->hashName());
 
         $attachment = new Attachment;
         $attachment->orginal_name = $request->plik->getClientOriginalName();
         $attachment->name = $request->plik->getClientOriginalName();
+        $attachment->hashName = $request->plik->hashName();
         $attachment->user_id = Auth::user()->id;
         $attachment->ticket_id = $ticket->id;
         $attachment->save();
@@ -96,11 +97,14 @@ class AttachmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $attachment
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Ticket $ticket)
     {
-        //
+        $image = DB::table('files')->where('id', $id)->first();
+        $file= $image->your_file_path;
+        $filename = public_path().'/uploads_folder/'.$file;
+        \File::delete($filename);
     }
 }

@@ -17,6 +17,7 @@ class CreateAttachmentsTable extends Migration
             $table->increments('id');
             $table->string('orginal_name');
             $table->string('name');
+            $table->string('hashName');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('ticket_id');
             $table->timestamps();

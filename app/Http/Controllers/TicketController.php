@@ -132,4 +132,11 @@ class TicketController extends Controller
         $ticket->delete();
         return redirect('/tickets');
     }
+
+    public function changestatus(Ticket $ticket)
+    {
+        $ticket->update(request(['status']));
+        return back();
+
+    }
 }

@@ -18,6 +18,7 @@ return view('welcome');
 
 Auth::routes();
 Route::get('tickets/ticketuser/{user}', 'TicketController@ticketuser')->name('ticketuser');
+Route::put('tickets/{ticket}/change', 'TicketController@changestatus')->name('changestatus');
 Route::resource('tickets/{ticket}/attachments', 'AttachmentController');
 
 

@@ -9,7 +9,7 @@ use App\Comment;
 
 class Ticket extends Model
 {
-    protected $fillable = ['title', 'body', 'priorytet', 'user_id'];
+    protected $fillable = ['title', 'body', 'priorytet', 'status','user_id'];
 
     public function user()
     {
