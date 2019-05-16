@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<form method="POST" action="/tickets/{{$ticket->id}}">
+<form method="POST" action="{{route('tickets.update', $ticket)}}">
     {{ csrf_field() }}
     {{method_field('PATCH')}}
 

@@ -17,6 +17,7 @@ class TicketController extends Controller
     {
         $this->middleware('auth');
         //$this->middleware('auth', ['except' => ['index']]);
+       // $this->authorizeResource(Ticket::class, 'ticket');
     }
     /**
      * Display a listing of the resource.
@@ -105,7 +106,7 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
-
+        $this->authorize('update', $ticket);
         $ticket->update(request(['title', 'body', 'priorytet', 'user_id']));
         return redirect('/tickets');
     }
