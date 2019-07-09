@@ -3,9 +3,12 @@
 <form method="POST" action="/tickets/{{$ticket->id}}/change">
     {{ csrf_field() }}
     {{ method_field('put') }}
+@if ($ticket->user->role_id === 2 || $ticket->user->role_id === 3)
     <button type="submit" name="status" value="close" class="btn btn-outline-danger btn-sm">
         Zmien status
     </button>
+    @endif
+
 </form>
 <div class="row">
     <div class="col">

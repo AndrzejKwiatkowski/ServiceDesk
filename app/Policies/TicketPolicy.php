@@ -42,7 +42,14 @@ class TicketPolicy
      */
     public function update(User $user, Ticket $ticket)
     {
-        return $user->id === $ticket->user_id;
+
+        if($user->id === $ticket->user_id || $user->role_id === 3){
+            return true;
+        }
+        else{
+           return abort(403, "Nie masz uprawnień do wykonania tej akcji");
+        }
+
 
     }
 
@@ -55,7 +62,7 @@ class TicketPolicy
      */
     public function delete(User $user, Ticket $ticket)
     {
-        //
+       //
     }
 
     /**

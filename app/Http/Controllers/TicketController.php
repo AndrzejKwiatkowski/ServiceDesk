@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User;
 use Auth;
 use Illuminate\Support\Facades\View;
 use App\Comment;
+use Exception;
 
 class TicketController extends Controller
 {
