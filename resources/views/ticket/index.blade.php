@@ -16,7 +16,7 @@
     </thead>
     <tbody>
     @foreach ($tickets as $ticket)
-    @if($ticket->status == 'open')
+    {{-- @if($ticket->status == 'open') --}}
       <tr>
         <td>{{$ticket->id}}</td>
         <td>{{$ticket->user->name}}</td>
@@ -29,7 +29,7 @@
         <td><a class="btn btn-outline-dark" href="{{url('tickets/' . $ticket->id)}}" role="button">Otwórz
         </a></td>
     </tr>
-    @endif
+    {{-- @endif --}}
     @endforeach
 
     </tbody>

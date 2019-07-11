@@ -26,3 +26,5 @@ Route::resource('tickets/{ticket}/attachments', 'AttachmentController');
 
 Route::resource('tickets', 'TicketController');
 Route::resource('tickets/{ticket}/comments', 'CommentController');
+Route::resource('tickets/{ticket}/solutions', 'SolutionController');
+

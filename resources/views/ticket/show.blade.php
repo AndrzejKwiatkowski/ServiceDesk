@@ -5,8 +5,16 @@
     {{ method_field('put') }}
 @if ($ticket->user->role_id === 2 || $ticket->user->role_id === 3)
     <button type="submit" name="status" value="close" class="btn btn-outline-danger btn-sm">
-        Zmien status
+        Rozwiąż
     </button>
+    <button type="submit" name="status" value="In progress" class="btn btn-outline-danger btn-sm">
+        Przypisz do mnie
+    </button>
+    <button type="submit" name="status" value="open" class="btn btn-outline-danger btn-sm">
+        Wróć do puli zgłoszeń
+    </button>
+    <a class="btn btn-outline-dark btn-sm" href="{{route('solutions.create', $ticket)}}" role="button">Dodaj rozwiązanie
+    </a>
     @endif
 
 </form>
