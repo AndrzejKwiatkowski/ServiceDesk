@@ -11,7 +11,9 @@
           <textarea class="form-control" name="solution" id="exampleFormControlTextarea1" rows="3"></textarea>
         </div>
             <div class="form-group">
-        <button type="submit"value="closed" class="btn btn-outline-primary">Rozwiąż</button>
+        <button type="submit"value="closed" name="status" class="btn btn-outline-primary">Rozwiąż</button>
         </div>
       </form>
+
+
 @endsection

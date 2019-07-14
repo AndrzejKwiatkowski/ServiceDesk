@@ -1,5 +1,11 @@
 @extends('layouts.app')
 @section('content')
+@if(session()->has('message'))
+<div class="alert alert-success col-md-3">
+    {{ session()->get('message') }}
+</div>
+
+@endif
 <table id="example" class="table">
     <thead class="thead-primary">
       <tr>
@@ -16,7 +22,7 @@
     </thead>
     <tbody>
     @foreach ($tickets as $ticket)
-    {{-- @if($ticket->status == 'open') --}}
+    @if($ticket->status == 'open' || $ticket->status =='In progress')
       <tr>
         <td>{{$ticket->id}}</td>
         <td>{{$ticket->user->name}}</td>
@@ -29,7 +35,7 @@
         <td><a class="btn btn-outline-dark" href="{{url('tickets/' . $ticket->id)}}" role="button">Otwórz
         </a></td>
     </tr>
-    {{-- @endif --}}
+    @endif
     @endforeach
 
     </tbody>

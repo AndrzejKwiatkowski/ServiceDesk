@@ -49,8 +49,11 @@ class SolutionController extends Controller
         $solution->user_id = Auth::user()->id;
         $solution->ticket_id = $ticket->id;
         $solution->save();
+        $ticket->update(request(['status']));
 
-        return redirect('/tickets');
+
+       return redirect('\tickets')->with('message', 'Zgłoszenie zostało zamknięte!');
+        // return redirect('\tickets');
     }
 
     /**
