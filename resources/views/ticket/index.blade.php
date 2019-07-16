@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @if(session()->has('message'))
-<div class="alert alert-success col-md-3">
+<div class="alert alert-success col-md-6">
     {{ session()->get('message') }}
 </div>
 
