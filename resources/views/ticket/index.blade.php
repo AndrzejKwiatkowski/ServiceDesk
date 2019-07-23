@@ -7,7 +7,7 @@
 
 @endif()
 
-<table id="example" class="table">
+<table id="myTable" class="table">
     <thead class="thead-primary">
         <tr>
             <th scope="col">Nr zgłoszenia</th>
@@ -41,4 +41,8 @@
 </table>
 {{ $tickets->links() }}
 
+
+
 @endsection
+
+

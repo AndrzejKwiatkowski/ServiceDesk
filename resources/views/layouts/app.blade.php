@@ -11,7 +11,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 
 
     <!-- Fonts -->
@@ -22,6 +22,15 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('laravel.png') }}">
 
+    <!-- Datatables -->
+    <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+       <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+       <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+
+
 </head>
 
 <body>
@@ -29,7 +38,7 @@
 
         <a class="navbar-brand" href="/tickets">Helpdesk</a>
 
-        
+
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,4 +108,13 @@
 
 </body>
 
+<script>
+     $(document).ready( function () {
+    $('#myTable').DataTable({
+        "paging": false,
+        "info": false
+    });
+} );
+
+</script>
 </html>
