@@ -1,97 +1,103 @@
 @extends('layouts.app')
 @section('content')
 <div class="container">
-<div class="row">
+    <div class="row">
 
-    <div class="col border bg-light">
+        <div class="col">
             @if (Auth::user()->role_id === 3)
-               <form method="POST" action="/tickets/{{$ticket->id}}/change">
+            <form method="POST" action="/tickets/{{$ticket->id}}/change">
                 {{ csrf_field() }}
                 {{ method_field('put') }}
 
-                   <button type="submit" name="status" value="In progress" class="btn btn-outline-secondary btn-sm mt-1">
+                <button type="submit" name="status" value="In progress" class="btn btn-block btn-outline-secondary btn-sm mt-1">
                     Przypisz do mnie
                 </button>
             </form>
 
 
-                <button type="submit" name="status" value="open" class="btn btn-outline-secondary btn-sm mt-1">
-                    Wróć do puli zgłoszeń
-                </button>
-                <a class="btn btn-outline-secondary btn-sm mt-1" href="{{route('solutions.create', $ticket)}}" role="button">Dodaj rozwiązanie
-                </a>
+            <button type="submit" name="status" value="open" class="btn btn-block  btn-outline-secondary btn-sm mt-1">
+                Wróć do puli zgłoszeń
+            </button>
+            <a class="btn btn-block  btn-outline-secondary btn-sm mt-1" href="{{route('solutions.create', $ticket)}}"
+                role="button">Dodaj rozwiązanie
+            </a>
             @endif
 
 
 
 
-    </div>
-    <div class="col-6 border card text-secendary">
-            <div class="card-body">
-        <h4 class="mt-1 card-title">Numer zgłoszenia: {{$ticket->id}}</h4>
-        <p>Klient: {{$ticket->user->name}}</p>
-        <p>Tytuł: {{$ticket->title}}</p>
-        <p>Opis: {{$ticket->body}}</p>
-        <p>Status: {{$ticket->status}}</p>
-        <p>Priorytet:<strong>{{$ticket->priorytet}}</strong></p>
-        <div class="row float-right">
-                <a class="btn btn-outline-primary btn-md mr-2" href="{{url('tickets/' . $ticket->id . '/edit')}}">Edytuj</a>
-                <form method="POST" action="/tickets/{{$ticket->id}}">
-                    {{ csrf_field() }}
-                    {{ method_field("DELETE") }}
-                    <button type="submit" class="btn btn-outline-danger btn-md mr-3">
-                        Usuń
-                    </button>
-                </form>
         </div>
-</div>
+        <div class="col-6">
 
-    </div>
-    <div class="col border bg-light">
-            <form method="POST" action="{{$ticket->id}}/attachments" enctype="multipart/form-data">
-                    @csrf @method('POST')
+            <div class="card-body">
+                <h4 class="mt-1">Numer zgłoszenia: {{$ticket->id}}</h4>
+                <p>Klient: {{$ticket->user->name}}</p>
+                <p>e-mail: {{$ticket->user->email}}</p>
+                <p class="text-right">Status: {{$ticket->status}}</p>
+                <p class="text-right">Priorytet:{{$ticket->priorytet}}</p>
+                <p>Tytuł: {{$ticket->title}}</p>
+                <p>Opis: {{$ticket->body}}</p>
 
-                    <div class="">
-                        <input class="mt-1" type="file" class="form-control-file" id="exampleFormControlFile1" name="plik" />
-
-                        <button type="submit" class="btn btn-outline-info btn-sm mt-1">
-                            Wyślij załącznik
+                <div class="row float-right">
+                    <a class="btn btn-outline-primary btn-md mr-2"
+                        href="{{url('tickets/' . $ticket->id . '/edit')}}">Edytuj</a>
+                    <form method="POST" action="/tickets/{{$ticket->id}}">
+                        {{ csrf_field() }}
+                        {{ method_field("DELETE") }}
+                        <button type="submit" class="btn btn-outline-danger btn-md mr-3">
+                            Usuń
                         </button>
-                    </div>
-                </form>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <div class="col">
+            <form method="POST" action="{{$ticket->id}}/attachments" enctype="multipart/form-data">
+                @csrf @method('POST')
+
+                <div class="">
+                    <input class="mt-1" type="file" class="form-control-file" id="exampleFormControlFile1"
+                        name="plik" />
+
+                    <button type="submit" class="btn btn-outline-danger btn-sm mt-1">
+                        Wyślij załącznik
+                    </button>
+                </div>
+            </form>
 
 
 
-                <table class="mt-2">
-                   <thead>
+            <table class="mt-2">
+                <thead>
                     <tr>
-                            <th>Nazwa</th>
-                            <th style="width: 50%">Data dołączenia</th>
+                        <th>Nazwa</th>
+                        <th style="width: 50%">Data dołączenia</th>
                     </tr>
 
-                   </thead>
+                </thead>
 
-                    <tbody>
-                            @foreach ($ticket->attachments as $attachment)
+                <tbody>
+                    @foreach ($ticket->attachments as $attachment)
 
-                         <tr>
-                            <td>
-                                <a href="{{asset('storage/attachments/' . $attachment->orginal_name)}}"
-                                    download>{{$attachment->orginal_name}}</a>
-                            </td>
-                            <td>
-                                {{$attachment->created_at}}
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                    <tr>
+                        <td>
+                            <a href="{{asset('storage/attachments/' . $attachment->orginal_name)}}"
+                                download>{{$attachment->orginal_name}}</a>
+                        </td>
+                        <td>
+                            {{$attachment->created_at}}
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
 
 
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col border" style="background-color: rgba(186, 189, 52, 0.959);">
+    <div class="row">
+        <div class="col">
             <h3 class="mt-5">Komentarze do zgłoszenia</h3>
             @foreach ($comments as $comment)
 
@@ -99,8 +105,9 @@
                 <li class="media">
                     <div class="media-body">
                         <h5 class="mt-0 mb-1"><span class="text-danger">Autor:</span> {{$comment->user->name}}</h5>
-                        <h6 class="mt-0 mb-1"><span class="text-danger mt-0 mb-1">Data utworzenia:</span> {{$comment->created_at}}</h6>
-                        <span class="text-danger">Komentarz:</span>  {{$comment->body}}
+                        <h6 class="mt-0 mb-1"><span class="text-danger mt-0 mb-1">Data utworzenia:</span>
+                            {{$comment->created_at}}</h6>
+                        <span class="text-danger">Komentarz:</span> {{$comment->body}}
                     </div>
                 </li>
             </ul>
@@ -108,8 +115,8 @@
             @endforeach
 
             @include('comment.create')
+        </div>
     </div>
-</div>
 </div>
 
 
