@@ -36,9 +36,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-        <a class="navbar-brand" href="/tickets">Helpdesk</a>
-
-
+        <a class="navbar-brand" href="">Service Desk</a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,9 +81,16 @@
                                                      document.getElementById('logout-form').submit();">
                                 {{ __('Logout') }}
                             </a>
+                            @if (Auth::user()->role_id === 3)
                             <a class="dropdown-item" href="{{url('tickets/ticketuser/' . Auth::user()->id) }}">Moje
                                 zgłoszenia</a>
+                            <a class="dropdown-item" href="{{url('tickets')}}">Wszystkie
+                                    zgłoszenia</a>
+                            @else
 
+                            <a class="dropdown-item" href="{{url('tickets/ticketuser/' . Auth::user()->id) }}">Moje
+                                zgłoszenia</a>
+                             @endif
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
@@ -112,8 +117,10 @@
      $(document).ready( function () {
     $('#myTable').DataTable({
         "paging": false,
-        "info": false
+        "info": false,
+
     });
+
 } );
 
 </script>
