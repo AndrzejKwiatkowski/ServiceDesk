@@ -7,8 +7,9 @@ use App\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Response;
-
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SolutionTicket;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class SolutionController extends Controller
 {
@@ -27,9 +28,12 @@ class SolutionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Ticket $ticket)
+    public function create(Ticket $ticket, Request $request, Solution $solution)
+
     {
 
+        //dd($ticket->solutions());
+        //Mail::to($request->user())->send(new SolutionTicket($ticket, $solution));
         return view('solution.create', compact('ticket'));
     }
 
@@ -39,7 +43,7 @@ class SolutionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Ticket $ticket)
+    public function store(Request $request, Ticket $ticket, Solution $solution)
     {
 
 
@@ -47,13 +51,23 @@ class SolutionController extends Controller
 
         $solution->solution = $request['solution'];
         $solution->user_id = Auth::user()->id;
+        $ticket->update(request(['status']));
         $solution->ticket_id = $ticket->id;
         $solution->save();
-        $ticket->update(request(['status']));
+
+        $ticket = Ticket::find($solution->ticket_id)
+            ->update([
+                'solution_id' => $solution->id,
+
+            ]);
+        $tickSol = Solution::where('id', $solution->id)->first();
 
 
-       return redirect('\tickets')->with('message', 'Zgłoszenie zostało zamknięte!');
-        // return redirect('\tickets');
+        Mail::to($request->user())->send(new SolutionTicket($ticket, $tickSol));
+
+        return redirect('tickets')->with('message', 'Zgłoszenie zostało zamknięte!');
+
+
     }
 
     /**
@@ -86,9 +100,7 @@ class SolutionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Solution $solution)
-    {
-
-    }
+    { }
 
     /**
      * Remove the specified resource from storage.
@@ -100,6 +112,4 @@ class SolutionController extends Controller
     {
         //
     }
-
-
 }

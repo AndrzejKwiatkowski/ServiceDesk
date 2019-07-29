@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-@if (Auth::user()->role_id === 3)
+@if (Auth::user()->role_id === 1)
 <div class="container">
     <div class="row">
 
@@ -13,12 +13,13 @@
                 <button type="submit" name="status" value="In progress" class="btn btn-block btn-outline-secondary btn-sm mt-1">
                     Przypisz do mnie
                 </button>
+                <button type="submit" name="status" value="open" class="btn btn-block  btn-outline-secondary btn-sm mt-1">
+                    Wróć do puli zgłoszeń
+                </button>
             </form>
 
 
-            <button type="submit" name="status" value="open" class="btn btn-block  btn-outline-secondary btn-sm mt-1">
-                Wróć do puli zgłoszeń
-            </button>
+
             <a class="btn btn-block  btn-outline-secondary btn-sm mt-1" href="{{route('solutions.create', $ticket)}}"
                 role="button">Dodaj rozwiązanie
             </a>
@@ -122,7 +123,7 @@
 
 
 @endif
-@if (Auth::user()->role_id === 2 || Auth::user()->role_id === 1)
+@if (Auth::user()->role_id === 2 || Auth::user()->role_id === 3)
 
 <div class="container">
     <div class="row">

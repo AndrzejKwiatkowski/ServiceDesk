@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddRoleIdToUsersTable extends Migration
+class AddSolutionIdToTicketsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class AddRoleIdToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('role_id')->default(3)->after('email');
-            $table->foreign('role_id')->references('id')->on('roles');
+        Schema::table('tickets', function (Blueprint $table) {
+            $table->unsignedBigInteger('solution_id')->after('user_id')->nullable();
+            $table->foreign('solution_id')->references('id')->on('solutions')->onDelete('cascade');
         });
     }
 
@@ -26,8 +26,8 @@ class AddRoleIdToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('role_id');
+        Schema::table('tickets', function (Blueprint $table) {
+            //
         });
     }
 }

@@ -16,12 +16,12 @@ class CreateSolutionsTable extends Migration
         Schema::create('solutions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('ticket_id');
+            $table->unsignedBigInteger('ticket_id')->nullable();
             $table->text('solution');
             $table->timestamps();
 
-            $table->foreign('ticket_id')->references('id')->on('tickets');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('ticket_id')->references('id')->on('tickets')->onDelete('cascade');
         });
     }
 

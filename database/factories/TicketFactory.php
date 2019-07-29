@@ -7,5 +7,6 @@ $factory->define(App\Ticket::class, function (Faker $faker) {
 
         'title' => $faker->text(15),
         'body' => $faker->text(200),
+        
     ];
 });

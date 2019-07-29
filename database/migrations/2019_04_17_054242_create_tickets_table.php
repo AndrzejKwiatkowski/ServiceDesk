@@ -19,10 +19,11 @@ class CreateTicketsTable extends Migration
             $table->text('body');
             $table->string('priorytet')->default('low');
             $table->string('status')->default('open');
-            $table->unsignedBigInteger('user_id')->default(1);
+            $table->unsignedBigInteger('user_id')->default('1');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            
 
 
 

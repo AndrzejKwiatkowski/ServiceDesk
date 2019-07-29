@@ -44,5 +44,11 @@
 
 
 @endsection
+<script>
+    setTimeout(function() {
+        $('div.alert.alert-success.col-md-6').fadeOut('fast');
+    }, 5000); // <-- time in milliseconds
+</script>
+
 
 
