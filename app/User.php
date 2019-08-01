@@ -53,4 +53,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Role::class);
     }
+    public function inProgress()
+    {
+        return $this->hasMany(Ticket::class, 'inProgressby', 'id');
+    }
 }

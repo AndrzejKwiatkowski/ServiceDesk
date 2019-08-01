@@ -14,7 +14,7 @@ class Solution extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function solution()
+    public function solutionn()
     {
         return $this->belongsTo(Ticket::class, 'ticket_id');
     }

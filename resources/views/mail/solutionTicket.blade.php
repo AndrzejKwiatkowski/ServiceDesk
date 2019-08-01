@@ -8,7 +8,9 @@
 </head>
 <body>
     <h1>Service Desk</h1>
-    Zgłoszenie o numerze: {{$ticket}} <br/>
-    Treść rozwiązania: {{$tickSol->solution}}
+    Zgłoszenie o numerze: {{$tickSol->ticket_id}} <br/>
+    Treść rozwiązania: {{$tickSol->solution}} <br>
+    Realizujący: {{$tickSol->solutionn->progress->name}}, {{$tickSol->solutionn->progress->email}}
+
 </body>
 </html>

@@ -10,7 +10,7 @@ use App\Solution;
 
 class Ticket extends Model
 {
-    protected $fillable = ['title', 'body', 'priorytet', 'status','user_id', 'solution_id', ];
+    protected $fillable = ['title', 'body', 'priorytet', 'status', 'user_id', 'solution_id', 'inProgressby'];
 
     public function user()
     {
@@ -19,14 +19,17 @@ class Ticket extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
-     }
-     public function attachments()
-     {
-         return $this->hasMany(Attachment::class);
-      }
-      public function solutions()
-     {
-         return $this->hasOne(Solution::class);
-      }
-
+    }
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class);
+    }
+    public function solutions()
+    {
+        return $this->hasOne(Solution::class);
+    }
+    public function progress()
+    {
+        return $this->belongsTo(User::class, 'inProgressby', 'id');
+    }
 }

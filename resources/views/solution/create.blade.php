@@ -13,7 +13,9 @@
             <div class="form-group">
         <button type="submit"value="closed" name="status" class="btn btn-outline-primary">Rozwiąż</button>
         </div>
-      </form>
 
+      </form>
+      
 
 @endsection
+

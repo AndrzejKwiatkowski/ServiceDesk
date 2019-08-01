@@ -9,20 +9,25 @@
             <form method="POST" action="/tickets/{{$ticket->id}}/change">
                 {{ csrf_field() }}
                 {{ method_field('put') }}
-
+                @if($ticket->status == 'open' || $ticket->status == 'in progress')
                 <button type="submit" name="status" value="In progress" class="btn btn-block btn-outline-secondary btn-sm mt-1">
                     Przypisz do mnie
                 </button>
+                @endif
+                @if($ticket->status == 'closed' ||$ticket->status == 'In progress'  || $ticket->solution_id == 'NULL')
                 <button type="submit" name="status" value="open" class="btn btn-block  btn-outline-secondary btn-sm mt-1">
                     Wróć do puli zgłoszeń
                 </button>
+                @endif
+
             </form>
 
-
-
+            @if($ticket->solution_id == 'NULL' ||$ticket->status == 'In progress'  || $ticket->solution_id == 'NULL')
             <a class="btn btn-block  btn-outline-secondary btn-sm mt-1" href="{{route('solutions.create', $ticket)}}"
-                role="button">Dodaj rozwiązanie
-            </a>
+            role="button">Dodaj rozwiązanie
+        </a>
+            @endif
+
 
 
 
@@ -35,6 +40,11 @@
                 <p>Klient: {{$ticket->user->name}}</p>
                 <p>e-mail: {{$ticket->user->email}}</p>
                 <p class="text-right">Status: {{$ticket->status}}</p>
+                @if($ticket->status == 'closed' ||$ticket->status == 'In progress')
+                @isset($ticket->progress->name)
+                                <p class="text-right">by: {{$ticket->progress->name}}</p>
+                @endisset
+                @endif
                 <p class="text-right">Priorytet:{{$ticket->priorytet}}</p>
                 <p>Tytuł: {{$ticket->title}}</p>
                 <p>Opis: {{$ticket->body}}</p>
@@ -70,10 +80,10 @@
 
 
             <table class="mt-2">
-                <thead>
+                <thead >
                     <tr>
                         <th>Nazwa</th>
-                        <th >Data dołączenia</th>
+                        <th class="float-right">Data dołączenia</th>
                     </tr>
 
                 </thead>
@@ -199,7 +209,7 @@
     </div>
     <div class="row">
         <div class="col">
-            <h3 class="mt-5">Komentarze do zgłoszenia</h3>
+            <h5 class="mt-5">Komentarze do zgłoszenia</h5>
             @foreach ($comments as $comment)
 
             <ul class="list-unstyled mt-5 col-md-offset-2 col-md-10">
@@ -208,7 +218,7 @@
                         <h5 class="mt-0 mb-1"><span class="text-danger">Autor:</span> {{$comment->user->name}}</h5>
                         <h6 class="mt-0 mb-1"><span class="text-danger mt-0 mb-1">Data utworzenia:</span>
                             {{$comment->created_at}}</h6>
-                        <span class="text-danger">Komentarz:</span> {{$comment->body}}
+                        <span class="text-danger">Treść:</span> {{$comment->body}}
                     </div>
                 </li>
             </ul>
@@ -216,6 +226,7 @@
             @endforeach
 
             @include('comment.create')
+
         </div>
     </div>
 </div>

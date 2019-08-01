@@ -19,7 +19,7 @@
       <tr>
         <td>{{$ticket->id}}</td>
 
-        <td>{{$user->name}}</td>
+        <td>{{$ticket->user_id}}</td>
 
 
         <td>{{$ticket->title}}</td>

@@ -18,23 +18,24 @@ class TicketController extends Controller
     {
         $this->middleware('auth');
         //$this->middleware('auth', ['except' => ['index']]);
-       // $this->authorizeResource(Ticket::class, 'ticket');
+        // $this->authorizeResource(Ticket::class, 'ticket');
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Ticket $tickets, Request $request)
+    public function index(Ticket $tickets, Request $request, User $user)
     {
-
-        //$ticket = Ticket::with('user')->get();
-        //dd($ticket);
         $tickets = Ticket::with('user')->paginate(10);
-        //dd($tickets);
 
+        $ticketsu = Ticket::where("user_id", "=", Auth::user()->id)->get();
 
-        return view('ticket.index', compact('tickets'));
+        if (Auth::user()->role_id === 1) {
+            return view('ticket.index', compact('tickets'));
+        } else {
+            return View::make('ticket.ticketuser')->with(array('user' => $user, 'tickets' => $ticketsu));
+        }
     }
 
     /**
@@ -60,7 +61,6 @@ class TicketController extends Controller
         $ticket->title = $request['title'];
         $ticket->body = $request['body'];
         $ticket->priorytet = $request['priorytet'];
-        // działa $ticket->user()->associate($request->user());
         $ticket->user_id = $request->user()->id;
         $ticket->save();
 
@@ -79,10 +79,8 @@ class TicketController extends Controller
     public function show(Ticket $ticket)
     {
 
-       // $tickets = $ticket->comments()->get();
+        // $tickets = $ticket->comments()->get();
         $comments = $ticket->comments()->with('user')->get();
-
-      //dd($comments);
         return view('ticket.show', compact('ticket', 'comments'));
     }
 
@@ -116,9 +114,7 @@ class TicketController extends Controller
     {
 
         $userlogged = User::find($user->id);
-
         $tickets = Ticket::where("user_id", "=", $userlogged->id)->get();
-
 
         return View::make('ticket.ticketuser')->with(array('user' => $user, 'tickets' => $tickets));
     }
@@ -135,10 +131,13 @@ class TicketController extends Controller
         return redirect('/tickets');
     }
 
-    public function changestatus(Ticket $ticket)
+    public function changestatus(Ticket $ticket, Request $request)
     {
+        //dd($request, $ticket);
         $ticket->update(request(['status']));
-        return back();
+        $ticket = Ticket::find($ticket->id)
+            ->update(['inProgressby' => $request->user()->id]);
 
+        return back();
     }
 }

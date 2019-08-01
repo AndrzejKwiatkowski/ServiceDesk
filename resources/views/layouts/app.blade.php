@@ -11,7 +11,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
 
 
     <!-- Fonts -->
@@ -23,20 +23,29 @@
     <link rel="shortcut icon" href="{{ asset('laravel.png') }}">
 
     <!-- Datatables -->
-    <script
+    {{-- <script
     src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-    crossorigin="anonymous"></script>
-       <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-       <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    crossorigin="anonymous"></script> --}}
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 
 
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        @auth
+        @if(Auth::user()->role_id === 1)
+        <a class="navbar-brand" href="{{route('tickets.index')}}">Service Desk</a>
+        @else
+        <a class="navbar-brand" href="{{url('tickets/ticketuser/' . Auth::user()->id) }}">Service Desk</a>
 
+        @endif
+        @else
         <a class="navbar-brand" href="">Service Desk</a>
+        @endauth
+
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,7 +90,7 @@
                                                      document.getElementById('logout-form').submit();">
                                 {{ __('Logout') }}
                             </a>
-                            @if (Auth::user()->role_id === 3)
+                            @if (Auth::user()->role_id === 1)
                             <a class="dropdown-item" href="{{url('tickets/ticketuser/' . Auth::user()->id) }}">Moje
                                 zgłoszenia</a>
                             <a class="dropdown-item" href="{{url('tickets')}}">Wszystkie
@@ -106,13 +115,18 @@
         </div>
     </nav>
 
+
+
+
     <div class="container-fluid">
         @yield('content')
-        <div>
+
+
 
 
 </body>
-
+<script src="{{ asset('js/app.js') }}"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script>
      $(document).ready( function () {
     $('#myTable').DataTable({
