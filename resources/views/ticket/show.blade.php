@@ -1,5 +1,14 @@
 @extends('layouts.app')
 @section('content')
+@if ($errors->any())
+<div class="col-4 alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 @if (Auth::user()->role_id === 1)
 <div class="container">
     <div class="row">
@@ -64,12 +73,15 @@
 
         </div>
         <div class="col-4">
-            <form method="POST" action="{{$ticket->id}}/attachments" enctype="multipart/form-data">
-                @csrf @method('POST')
+            <form method="POST" id="formattach" name="plik" action="{{$ticket->id}}/attachments" enctype="multipart/form-data">
+                @csrf
+                @method('POST')
 
                 <div class="">
                     <input class="mt-1" type="file" class="form-control-file" id="exampleFormControlFile1"
-                        name="plik" />
+                        name="plik">
+
+
 
                     <button type="submit" class="btn btn-outline-danger btn-sm mt-1">
                         Wyślij załącznik
@@ -164,12 +176,13 @@
 
         </div>
         <div class="col">
-            <form method="POST" action="{{$ticket->id}}/attachments" enctype="multipart/form-data">
+            <form id="formattach" data-parsley-validate="" method="POST" action="{{$ticket->id}}/attachments" enctype="multipart/form-data">
                 @csrf @method('POST')
 
                 <div class="">
                     <input class="mt-1" type="file" class="form-control-file" id="exampleFormControlFile1"
-                        name="plik" />
+                        name="plik"
+                        data-parsley-fileextension='jpg, png, pdf' />
 
                     <button type="submit" class="btn btn-outline-danger btn-sm mt-1" style="float: right;">
                         Wyślij załącznik
@@ -233,4 +246,10 @@
 
 @endif
 
+@endsection
+@section('script')
+<script>
+    const instance = $('#formattach').parsley();
+
+</script>
 @endsection

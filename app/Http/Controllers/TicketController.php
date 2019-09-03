@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User;
 use Auth;
 use Illuminate\Support\Facades\View;
+use App\Http\Requests\StoreTicket;
 use App\Comment;
 use Exception;
 
@@ -54,7 +55,7 @@ class TicketController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTicket $request)
     {
 
         $ticket = new Ticket();
@@ -78,7 +79,7 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-
+        $this->authorize('view', $ticket);
         // $tickets = $ticket->comments()->get();
         $comments = $ticket->comments()->with('user')->get();
         return view('ticket.show', compact('ticket', 'comments'));
@@ -113,7 +114,7 @@ class TicketController extends Controller
     public function ticketuser(User $user)
     {
 
-        $userlogged = User::find($user->id);
+        $userlogged = $user = Auth::user();
         $tickets = Ticket::where("user_id", "=", $userlogged->id)->get();
 
         return View::make('ticket.ticketuser')->with(array('user' => $user, 'tickets' => $tickets));

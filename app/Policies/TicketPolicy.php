@@ -19,6 +19,11 @@ class TicketPolicy
      */
     public function view(User $user, Ticket $ticket)
     {
+        if ($user->id === $ticket->user_id || $user->role_id === 1) {
+            return true;
+        } else {
+            return abort(403, "Nie masz uprawnień do wyświetania zgłoszeń innych użytkowników.");
+        }
 
     }
 
@@ -43,7 +48,7 @@ class TicketPolicy
     public function update(User $user, Ticket $ticket)
     {
 
-        if($user->id === $ticket->user_id || $user->role_id === 3){
+        if($user->id === $ticket->user_id || $user->role_id === 1){
             return true;
         }
         else{
@@ -62,7 +67,7 @@ class TicketPolicy
      */
     public function delete(User $user, Ticket $ticket)
     {
-       //
+
     }
 
     /**

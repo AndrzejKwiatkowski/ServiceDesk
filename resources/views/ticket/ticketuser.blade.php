@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('head')
+<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+@endsection
 @section('content')
 <table id="myTable" class="table">
     <thead class="thead-primary">
@@ -19,7 +22,7 @@
       <tr>
         <td>{{$ticket->id}}</td>
 
-        <td>{{$ticket->user_id}}</td>
+        <td>{{$ticket->user->name}}</td>
 
 
         <td>{{$ticket->title}}</td>
@@ -39,3 +42,16 @@
 
 
   @endsection
+@section('script')
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready( function () {
+    $('#myTable').DataTable({
+        "paging": false,
+        "info": false,
+
+    });
+
+} );
+</script>
+@endsection

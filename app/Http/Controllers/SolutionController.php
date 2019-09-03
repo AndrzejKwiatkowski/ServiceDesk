@@ -10,9 +10,16 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SolutionTicket;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use App\Http\Requests\StoreSolution;
+
+
 
 class SolutionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -43,7 +50,7 @@ class SolutionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Ticket $ticket, Solution $solution)
+    public function store(StoreSolution $request, Ticket $ticket, Solution $solution)
     {
 
 
@@ -53,6 +60,8 @@ class SolutionController extends Controller
         $solution->user_id = Auth::user()->id;
         $ticket->update(request(['status']));
         $solution->ticket_id = $ticket->id;
+
+
         $solution->save();
 
         $ticket = Ticket::find($solution->ticket_id)
