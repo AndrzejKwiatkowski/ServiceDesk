@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<h3>Załączniki</h3>
+<h3>Attachments</h3>
 @foreach ($attachments as $attachment)
 
 

@@ -24,16 +24,14 @@ class StoreComment extends FormRequest
     public function rules()
     {
         return [
-            'solution' => 'required|min:16|max:1000',
+            'solution' => 'required|min:2|max:1000',
 
         ];
     }
     public function messages()
     {
         return [
-            'body.required' => 'Pole wymagane.',
-            'body.min' => 'Wymagana ilość znaków 16.',
-            'body.max' => 'Maksymalna ilość znaków 1000.',
+
 
 
         ];

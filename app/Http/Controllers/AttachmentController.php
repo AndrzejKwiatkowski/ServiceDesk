@@ -50,13 +50,13 @@ class AttachmentController extends Controller
      */
     public function store(StoreAttachment $request, Ticket $ticket)
     {
-        //dd($request->plik);
-        $request->plik->storeAs('attachments', $request->plik->hashName());
+        //dd($request->file);
+        $request->file->storeAs('attachments', $request->file->hashName());
 
         $attachment = new Attachment;
-        $attachment->orginal_name = $request->plik->getClientOriginalName();
-        $attachment->name = $request->plik->getClientOriginalName();
-        $attachment->hashName = $request->plik->hashName();
+        $attachment->orginal_name = $request->file->getClientOriginalName();
+        $attachment->name = $request->file->getClientOriginalName();
+        $attachment->hashName = $request->file->hashName();
         $attachment->user_id = Auth::user()->id;
         $attachment->ticket_id = $ticket->id;
         $attachment->save();

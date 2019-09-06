@@ -4,14 +4,14 @@
     @method('POST')
 
         <div class="form-group">
-                <label for="exampleFormControlTextarea1">Dodaj komentarz</label>
+
                 <textarea class="form-control" name="body" id="exampleFormControlTextarea1" rows="3"
             data-parsley-required
-            data-parsley-minlength="16"
+            data-parsley-minlength="2"
             data-parsley-maxlength="1000"></textarea>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-outline-primary">Dodaj komentarz</button>
+            <button type="submit" class="btn btn-outline-primary">Send comment</button>
         </div>
 </form>
 </div>

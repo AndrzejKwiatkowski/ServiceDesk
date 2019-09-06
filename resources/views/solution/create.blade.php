@@ -17,7 +17,7 @@
     @method('POST')
 
          <div class="form-group">
-          <label for="exampleFormControlTextarea1">Rozwiązanie</label>
+          <label for="exampleFormControlTextarea1">Create solution</label>
           <textarea class="form-control" name="solution" id="exampleFormControlTextarea1" rows="3"
             data-parsley-required
             data-parsley-minlength="16"
@@ -25,7 +25,7 @@
 
         </div>
             <div class="form-group">
-        <button type="submit"value="closed" name="status" class="btn btn-outline-primary">Rozwiąż</button>
+        <button type="submit"value="closed" name="status" class="btn btn-outline-primary">Solve</button>
         </div>
 
       </form>

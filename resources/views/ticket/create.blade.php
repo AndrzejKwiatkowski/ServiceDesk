@@ -15,31 +15,31 @@
         {{csrf_field()}}
 
         <div class="form-group">
-            <label for="exampleFormControlInput1">Tytuł</label>
+            <label for="exampleFormControlInput1">Title</label>
             <input type="input" name="title"
             data-parsley-required
-            data-parsley-minlength="16"
+            data-parsley-minlength="8"
             data-parsley-maxlength="255"
             class="form-control" id="exampleFormControlInput1">
         </div>
         <div class="form-group">
-            <label for="exampleFormControlTextarea1">Opis</label>
+            <label for="exampleFormControlTextarea1">Description</label>
             <textarea class="form-control" name="body"
             data-parsley-required
-            data-parsley-minlength="16"
+            data-parsley-minlength="8"
             data-parsley-maxlength="1000"
             id="exampleFormControlTextarea1" rows="4"></textarea>
         </div>
         <div class="form-group col-6">
-            <label for="exampleFormControlSelect1">Wybierz prioytet</label>
+            <label for="exampleFormControlSelect1">Select priority</label>
             <select class="form-control" name="priorytet" id="exampleFormControlSelect1">
-                <option>Niski</option>
-                <option>Średni</option>
-                <option>Wysoki</option>
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
             </select>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-outline-primary">Utwórz zgłoszenie</button>
+            <button type="submit" class="btn btn-outline-primary">Create ticket</button>
         </div>
     </form>
 </div>

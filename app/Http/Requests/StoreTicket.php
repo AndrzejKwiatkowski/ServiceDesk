@@ -24,20 +24,20 @@ class StoreTicket extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|min:16|max:255',
+            'title' => 'required|min:8|max:255',
             'body' => 'required|min:16|max:1000',
         ];
     }
     public function messages()
     {
-        return [
-            'title.required' => 'Pole wymagane.',
-            'title.min' => 'Wymagana ilość znaków 16.',
-            'title.max' => 'Maksymalna ilość znaków 255.',
+         return [
+        //     'title.required' => 'Pole wymagane.',
+        //     'title.min' => 'Wymagana ilość znaków 16.',
+        //     'title.max' => 'Maksymalna ilość znaków 255.',
 
-            'body.required' => 'Pole wymagane.',
-            'body.min' => 'Wymagana ilość znaków 16.',
-            'body.max' => 'Maksymalna ilość znaków 1000.',
-        ];
+        //     'body.required' => 'Pole wymagane.',
+        //     'body.min' => 'Wymagana ilość znaków 16.',
+        //     'body.max' => 'Maksymalna ilość znaków 1000.',
+         ];
     }
 }

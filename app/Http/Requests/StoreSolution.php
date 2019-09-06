@@ -31,9 +31,7 @@ class StoreSolution extends FormRequest
     public function messages()
     {
         return [
-            'body.required' => 'Pole wymagane.',
-            'body.min' => 'Wymagana ilość znaków 16.',
-            'body.max' => 'Maksymalna ilość znaków 1000.',
+            
 
 
         ];

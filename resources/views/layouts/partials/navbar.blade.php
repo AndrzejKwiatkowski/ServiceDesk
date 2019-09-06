@@ -33,7 +33,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url('tickets/create')}}">Nowe zgłoszenie</a>
+                    <a class="nav-link" href="{{url('tickets/create')}}">Create ticket</a>
                 </li>
 
 
@@ -55,14 +55,13 @@
                             {{ __('Logout') }}
                         </a>
                         @if (Auth::user()->role_id === 1)
-                        <a class="dropdown-item" href="{{url('tickets/my-tickets') }}">Moje
-                            zgłoszenia</a>
-                        <a class="dropdown-item" href="{{url('tickets')}}">Wszystkie
-                            zgłoszenia</a>
+                        <a class="dropdown-item" href="{{url('tickets/my-tickets') }}">My
+                            tickets</a>
+                        <a class="dropdown-item" href="{{url('tickets')}}">All tickets</a>
                         @else
 
-                        <a class="dropdown-item" href="{{url('tickets/my-tickets/') }}">Moje
-                            zgłoszenia</a>
+                        <a class="dropdown-item" href="{{url('tickets/my-tickets/') }}">
+                            My tickets</a>
                         @endif
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf

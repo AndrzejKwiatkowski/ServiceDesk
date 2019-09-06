@@ -25,15 +25,15 @@ class StoreAttachment extends FormRequest
     {
         return [
 
-            'plik' => 'required|mimes:pdf,jpeg,bmp,png|max:1024'
+
+            'file' => 'required|mimes:pdf,jpeg,bmp,png|max:1024'
         ];
     }
 
     public function messages()
     {
         return [
-            'plik.mimes' => 'Załacznik może posiadać format pdf, jpeg, bmp, png.',
-            'plik.max' => 'Załacznik nie może przekraczac 1MB pojemności.',
+            
             ];
     }
 }
