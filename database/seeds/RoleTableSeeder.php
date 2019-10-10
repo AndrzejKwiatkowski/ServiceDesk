@@ -20,13 +20,6 @@ class RoleTableSeeder extends Seeder
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ],
             [
-                'name' => 'operator',
-                'description' => 'Operator rights',
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-
-            ],
-            [
                 'name' => 'user',
                 'description' => 'User rights ',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
