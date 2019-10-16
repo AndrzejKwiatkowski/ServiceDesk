@@ -72,7 +72,7 @@ class SolutionController extends Controller
         $tickSol = Solution::where('id', $solution->id)->first();
                 //dd($tickSol->solutionn->progress->email);
 
-        Mail::to($request->user())->send(new SolutionTicket($ticket, $tickSol));
+        // Mail::to($request->user())->send(new SolutionTicket($ticket, $tickSol));
 
         return redirect('tickets')->with('message', 'Zgłoszenie zostało zamknięte!');
 

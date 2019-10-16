@@ -58,14 +58,20 @@
                                 </button>
 
                                 @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                                    {{-- <a class="btn btn-link" href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
-                                    </a>
+                                    </a> --}}
                                 @endif
                             </div>
                         </div>
                     </form>
                 </div>
+            </div>
+            <div class="info-login" style="margin-top: 8px; font-size: 12px;">
+                If you would like to check my aplication Service Desk use this credentionals.<br/>
+                <strong>Login:</strong> admin@test.com <strong>Password:</strong> 123qweasd (for admin privilages)<br/>
+                <strong>Login:</strong> user@test.com <strong>Password:</strong> 123qweasd (for user privilages)
+
             </div>
         </div>
     </div>

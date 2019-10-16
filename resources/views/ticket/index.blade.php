@@ -72,6 +72,7 @@
         $('div.alert.alert-success.col-md-6').fadeOut('fast');
     }, 10000); // <-- time in milliseconds
 </script>
+
 @endsection
 {{-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> --}}
