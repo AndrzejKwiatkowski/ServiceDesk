@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\TicketServiceInterface;
 use App\Ticket;
 
 use Illuminate\Http\Request;
@@ -15,9 +16,14 @@ use Exception;
 
 class TicketController extends Controller
 {
-    public function __construct()
+
+    protected $ticketService;
+
+    public function __construct(TicketServiceInterface $ticketService) // czemu tak to wytłumaczyłem w AppServiceProvider
     {
-        $this->middleware('auth');
+        $this->ticketService = $ticketService;
+        $this->middleware('auth'); // to do middlewarera w folderze Http i podpinasz go do routea
+
         //$this->middleware('auth', ['except' => ['index']]);
         // $this->authorizeResource(Ticket::class, 'ticket');
     }
@@ -26,16 +32,24 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Ticket $tickets, Request $request, User $user)
+    public function index(Ticket $tickets, Request $request, User $user) // $tickets, $request jest nieuzywany, $user jest tu kompletnie niepotrzebny
     {
+        /**
+         * cała logika powinna byc podzielona na 2 cześci, niepotrzebnie pobierasz zawsze wszystkie tickety i tickety jednego usera.
+         * kiedy jestes adminem pobierz wszystko i przekaz do widoku, a kiedy jestes userem pobierz tylko usera
+         */
+
         $tickets = Ticket::with('user')->paginate(10);
 
         $ticketsu = Ticket::where("user_id", "=", Auth::user()->id)->get();
 
-        if (Auth::user()->role_id === 1) {
+
+        if (Auth::user()->isAdmin()) { // taka metoda to do modelu, napisałem Ci przykład w modelu, isAdmin(),
+            // poza tym takie stałe inty jak np tutaj 1 zawsze do constów w modelu, przykład model Role
             return view('ticket.index', compact('tickets'));
         } else {
-            return View::make('ticket.ticketuser')->with(array('user' => $user, 'tickets' => $ticketsu));
+            return View::make('ticket.ticketuser')->with(array('user' => $user, 'tickets' => $ticketsu)); //user nie używasz w widoku, do wyrzucenia
+            // nie wiem czemu raz używasz helpera a raz fasady, ujednolić to
         }
     }
 
@@ -57,17 +71,37 @@ class TicketController extends Controller
      */
     public function store(StoreTicket $request)
     {
+        /**
+         * to robić lepiej przez metode create na modelu
+         * Ticket::create([
+         *      'tilte' => $request->title itd
+         * ]);
+         *
+         * chyba, ze chcesz triggerować observery, ale nie widzę żebyś je miał.
+         * różnica jest taka, że jak masz mass assignment jak przy metodach update i create to działa to szybciej, bo
+         * 1. nie tworzysz instancji obiektu
+         * 2. wysyłasz gołe zapytanie do mysql bez pobrania rekordu
+         *
+         *
+         * cały ten kod powinien być przeniesiony do następnej warstwy abstrakcji czyli do jakiegoś servicu typu TicketService,
+         * bo co się stanie jak w jakimś innym miejscu aplikacji będziesz też tworzył ticket, wtedy musisz powielić ten kod,
+         * a wtedy jak np kiedyś w przyszłości dojdzie Ci kolejna propercja w modelu np. to jak długo ticket jest ważny,
+         * to będziesz musiał znaleść wszystkie miejsca gdzie tworzysz ticket i tam to zmienić.
+         *
+         * napisałem Ci przykład.
+         */
 
-        $ticket = new Ticket();
-        $ticket->title = $request['title'];
-        $ticket->body = $request['body'];
-        $ticket->priorytet = $request['priorytet'];
-        $ticket->user_id = $request->user()->id;
-        $ticket->save();
+//        $ticket = new Ticket();
+//        $ticket->title = $request['title'];
+//        $ticket->body = $request['body'];
+//        $ticket->priorytet = $request['priorytet'];
+//        $ticket->user_id = $request->user()->id;
+//        $ticket->save();
+
+        $this->ticketService->create($request->only('title', 'body', 'priorytet'));
 
 
-
-        //  $ticket = Ticket::create($request->all());
+        //  $ticket = Ticket::create($request->all()); // o, tu jest spoko
         return redirect('tickets');
     }
 
