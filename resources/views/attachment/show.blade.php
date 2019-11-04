@@ -7,9 +7,9 @@
 <table>
     <th>
         <tr>
-         <td>{{$attachment->orginal_name}}</td>
+         <td>{{$attachment->hashName}}</td>
             <td>
-                <a href="{{asset('storage/attachments/' . $attachment->orginal_name)}}" download>{{$attachment->orginal_name}}</a>
+                <a href="{{asset('storage/attachments/' . $attachment->hashName)}}" download>{{$attachment->hashName}}</a>
             </td>
         </tr>
     </th>

@@ -105,8 +105,8 @@
 
                     <tr>
                         <td>
-                            <a href="{{asset('storage/attachments/' . $attachment->orginal_name)}}"
-                                download>{{str_limit($attachment->orginal_name, 30)}}</a>
+                            <a href="https://devosto.s3.amazonaws.com/attachments/{{$attachment->hashName}}"
+                                download>{{str_limit($attachment->name, 30)}}</a>
                         </td>
                         <td>
                             {{$attachment->created_at}}

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\User;
 use Illuminate\Support\Facades\Storage;
+use AWS;
 
 class AttachmentController extends Controller
 {
@@ -51,7 +52,10 @@ class AttachmentController extends Controller
     public function store(StoreAttachment $request, Ticket $ticket)
     {
         //dd($request->file);
-        $request->file->storeAs('attachments', $request->file->hashName());
+       // $request = Storage::disk('s3')->put($request->file,'devattachs');
+       //dd($request->file->getClientOriginalName());
+        Storage::disk('s3')->put('attachments', $request->file, 'public');
+        //$request->file->storeAs('attachments', $request->file->hashName());
 
         $attachment = new Attachment;
         $attachment->orginal_name = $request->file->getClientOriginalName();

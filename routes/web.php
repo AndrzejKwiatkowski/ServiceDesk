@@ -18,8 +18,8 @@ return view('welcome');
 
 Auth::routes(['register' => false]);
 Route::get('tickets/my-tickets', 'TicketController@ticketuser')->name('ticketuser');
-Route::put('tickets/{ticket}/change', 'TicketController@changestatus')->name('changestatus');
-Route::resource('tickets/{ticket}/attachments', 'AttachmentController');
+Route::put('/tickets/{ticket}/change', 'TicketController@changestatus')->name('changestatus');
+Route::resource('/tickets/{ticket}/attachments', 'AttachmentController');
 
 
 

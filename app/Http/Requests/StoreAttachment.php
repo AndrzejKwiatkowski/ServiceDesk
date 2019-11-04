@@ -26,7 +26,7 @@ class StoreAttachment extends FormRequest
         return [
 
 
-            'file' => 'required|mimes:pdf,jpeg,bmp,png|max:1024'
+            'file' => 'required|mimes:pdf,jpeg,jpg,bmp,png|max:1024'
         ];
     }
 
