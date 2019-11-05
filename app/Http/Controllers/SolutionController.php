@@ -18,7 +18,7 @@ class SolutionController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth'); // przenieść
     }
     /**
      * Display a listing of the resource.
@@ -35,7 +35,7 @@ class SolutionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Ticket $ticket, Request $request, Solution $solution)
+    public function create(Ticket $ticket, Request $request, Solution $solution) // $request i $solution do usunięcia
 
     {
 
@@ -50,9 +50,35 @@ class SolutionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSolution $request, Ticket $ticket, Solution $solution)
+    public function store(StoreSolution $request, Ticket $ticket, Solution $solution) // $solution nie potrzebne
     {
 
+        /**
+         *
+         *  logika do servicu
+         *
+         *  tutaj to się dzieje magia
+         *  ticket ma relacje z rozwiązaniem one to one, a dokładniej mówiąc to ticket ma rozwiązanie,
+         *  nie potrzebujesz w obydwu tabelach mieć odwołania do poprzedniej, tzn ticket nie potrzebuje solution_id,
+         *  https://laravel.com/docs/6.x/eloquent-relationships#one-to-one, w tym przykładzie to uzytkownik ma telefon, więc
+         *  telefon trzyma user_id do usera
+         *  a żeby stworzyc takie piękne powiązanie wystrczy zrobić
+         *  $ticket->solution()->save($solution)
+         *  https://laravel.com/docs/6.x/eloquent-relationships#inserting-and-updating-related-models
+         *
+         *  poza tym, tworzysz solution, następnie wyszukujesz ticket, który już dostałes w argumencie metody,
+         *  potem wyszukujesz solution, który przed chwilą stworzyłeś, żeby przekazać go do maila, te ostatnie dwa kroki są zupełnie zbędne
+         *
+         *  jeżeli chciałes to zrobić, bo myślałeś, że masz "starą" wersję ticketu albo solution (chociaż tak nie jest, bo updatujesz obiekty na bieżąco),
+         *  to masz taką metode na modelu jak fresh(), np. $solution->fresh(), ale w tym przypadku jest to niepotrzebne
+         *
+         *  tak jak gadaliśmy to wysyłanie maila fajnie byłoby przenieść do mechanizmu event->listener
+         *  https://laravel.com/docs/5.8/events,
+         *  a jak już to ogarniesz to zamiast wysyłać w listenerze maila to użyć do tego kolejek, innymi słowy, w listenerze dispatchować jobke,
+         *  która wysyła maila
+         *  https://laravel.com/docs/5.8/queues
+         *
+         */
 
         $solution = new Solution();
 

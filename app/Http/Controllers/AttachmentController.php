@@ -15,7 +15,7 @@ class AttachmentController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth'); // przenieść
     }
     /**
      * Display a listing of the resource.
@@ -53,6 +53,7 @@ class AttachmentController extends Controller
         //dd($request->file);
         $request->file->storeAs('attachments', $request->file->hashName());
 
+        // do servicu
         $attachment = new Attachment;
         $attachment->orginal_name = $request->file->getClientOriginalName();
         $attachment->name = $request->file->getClientOriginalName();
@@ -105,9 +106,11 @@ class AttachmentController extends Controller
      * @param  int  $attachment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Attachment $attachment, Ticket $ticekt)
+    public function destroy(Attachment $attachment, Ticket $ticekt) // ticket niepotrzebny
     {
-        $image = DB::table('attachments')->where('id', $attachment->ticket_id)->first();
+        $image = DB::table('attachments')->where('id', $attachment->ticket_id)->first(); // Attachments::where(),
+        // a tak w ogóle to dlaczego wyszukujesz id po $attachment->ticket_id, przecież trzymasz już $attachment w ręku
+        // $file = $attachment->hashName;
         $file= $image->your_file_path;
         $filename = public_path().'/uploads_folder/'.$file;
         File::delete($filename);

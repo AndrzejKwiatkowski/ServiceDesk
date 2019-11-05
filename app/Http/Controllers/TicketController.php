@@ -22,10 +22,8 @@ class TicketController extends Controller
     public function __construct(TicketServiceInterface $ticketService) // czemu tak to wytłumaczyłem w AppServiceProvider
     {
         $this->ticketService = $ticketService;
-        $this->middleware('auth'); // to do middlewarera w folderze Http i podpinasz go do routea
 
-        //$this->middleware('auth', ['except' => ['index']]);
-        // $this->authorizeResource(Ticket::class, 'ticket');
+        $this->middleware('auth'); // to do middlewarera w folderze Http i podpinasz go do routea
     }
     /**
      * Display a listing of the resource.
@@ -48,8 +46,10 @@ class TicketController extends Controller
             // poza tym takie stałe inty jak np tutaj 1 zawsze do constów w modelu, przykład model Role
             return view('ticket.index', compact('tickets'));
         } else {
-            return View::make('ticket.ticketuser')->with(array('user' => $user, 'tickets' => $ticketsu)); //user nie używasz w widoku, do wyrzucenia
-            // nie wiem czemu raz używasz helpera a raz fasady, ujednolić to
+            return View::make('ticket.ticketuser')->with(array('user' => $user, 'tickets' => $ticketsu));
+            // user nie używasz w widoku, do wyrzucenia
+            // nie wiem czemu raz używasz helpera a raz fasady, ujednolić to,
+            // helper korzysta pod spodem z tej fasady
         }
     }
 
@@ -83,7 +83,7 @@ class TicketController extends Controller
          * 2. wysyłasz gołe zapytanie do mysql bez pobrania rekordu
          *
          *
-         * cały ten kod powinien być przeniesiony do następnej warstwy abstrakcji czyli do jakiegoś servicu typu TicketService,
+         * cały ten kod powinien być przeniesiony do następnej warstwy abstrakcji, czyli do jakiegoś servicu typu TicketService,
          * bo co się stanie jak w jakimś innym miejscu aplikacji będziesz też tworzył ticket, wtedy musisz powielić ten kod,
          * a wtedy jak np kiedyś w przyszłości dojdzie Ci kolejna propercja w modelu np. to jak długo ticket jest ważny,
          * to będziesz musiał znaleść wszystkie miejsca gdzie tworzysz ticket i tam to zmienić.
@@ -98,8 +98,11 @@ class TicketController extends Controller
 //        $ticket->user_id = $request->user()->id;
 //        $ticket->save();
 
-        $this->ticketService->create($request->only('title', 'body', 'priorytet'));
+        $ticket = $this->ticketService->create(array_merge($request->only('title', 'body', 'priorytet')));
 
+        if ($ticket) {
+            Auth::user()->tickets()->save($ticket);
+        }
 
         //  $ticket = Ticket::create($request->all()); // o, tu jest spoko
         return redirect('tickets');
@@ -113,9 +116,9 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        $this->authorize('view', $ticket);
-        // $tickets = $ticket->comments()->get();
-        $comments = $ticket->comments()->with('user')->get();
+        $this->authorize('view', $ticket); // przeniósłbym tą autoryzacje do middlewarów https://laravel.com/docs/5.8/authorization#via-middleware
+        $comments = $ticket->comments()->with('user')->get(); // tutaj wystraczy Ci zrobić ticket->load('comments')
+        // i nie potrzebujesz przekazywac drugiej zmiennej comments do widoku
         return view('ticket.show', compact('ticket', 'comments'));
     }
 
@@ -126,7 +129,6 @@ class TicketController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Ticket $ticket)
-
     {
         return view('ticket.edit', compact('ticket'));
     }
@@ -138,17 +140,29 @@ class TicketController extends Controller
      * @param  \App\Ticekt  $ticekt
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Ticket $ticket)
+    public function update(Request $request, Ticket $ticket) // $request niepotrzebny
     {
-        $this->authorize('update', $ticket);
-        $ticket->update(request(['title', 'body', 'priorytet', 'user_id']));
+
+        /**
+         *  brakuje tu walidacji
+         */
+
+        $this->authorize('update', $ticket); // do middleware https://laravel.com/docs/5.8/authorization#via-middleware
+        $ticket->update(request(['title', 'body', 'priorytet', 'user_id'])); // to do TicketService
         return redirect('/tickets');
     }
 
     public function ticketuser(User $user)
     {
 
-        $userlogged = $user = Auth::user();
+        /**
+         * rozumiem, że to ma wyświetlić wszystkie tickety zalogowanego użytkownika?
+         * w takim razie ten user w argumencie metody jest niepotrzebny
+         */
+
+        $userlogged = $user = Auth::user(); // po co tutaj to podwójne przypisanie? $loggedUser w zupełności wystarczy,
+        // jak piszesz nazwy zmiennych to rób to camel casem
+        // https://www.php-fig.org/psr/psr-1/
         $tickets = Ticket::where("user_id", "=", $userlogged->id)->get();
 
         return View::make('ticket.ticketuser')->with(array('user' => $user, 'tickets' => $tickets));
@@ -161,14 +175,31 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-
+        /**
+         *  przydałoby się dodać softdelety do wszystkich modeli,
+         *  https://laravel.com/docs/5.8/eloquent#soft-deleting
+         */
         $ticket->delete();
         return redirect('/tickets');
     }
 
     public function changestatus(Ticket $ticket, Request $request)
     {
-        //dd($request, $ticket);
+
+        /**
+         * tutaj brakuje walidacji
+         *
+         * robisz tu dziwną rzecz, najpierw updatujesz w tickecie pole status (o ile to w ogóle zadziała), nie jestem pewien,
+         * następnie wyszukujesz ponownie ticket, który już masz w ręku i dopiero wtedy updatujesz inProgressBy,
+         * co by jeszcze bylo zabawniej, masz request wstrzyknięty w metode, a używasz helpera
+         *
+         * jak to powinno byc zrobione to w modelu Ticket powinienes utworzyc metode typu,
+         * assignOwner($user) (nie wiem czy nazwa jest najbardziej odpowiednia, pewnie nie)
+         * i w środku obsłużyć przydzielanie usera i zmiane statusu.
+         * Warto zauważyć, że status chyba w tym przypadku będzie zawsze 'in progress' więc nie wiem po co brać to z requestu, chyba, że się myle
+         *
+         */
+
         $ticket->update(request(['status']));
         $ticket = Ticket::find($ticket->id)
             ->update(['inProgressby' => $request->user()->id]);
