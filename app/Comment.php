@@ -12,7 +12,7 @@ class Comment extends Model
      {
          return $this->belongsTo(Ticket::class, 'ticket_id');
      }
-    public function user()
+    public function user() // po co ta relacja?
     {
         return $this->belongsTo(User::class, 'user_id');
     }

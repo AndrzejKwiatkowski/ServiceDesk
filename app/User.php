@@ -57,4 +57,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Ticket::class, 'inProgressby', 'id');
     }
+
+    public function isAdmin()
+    {
+        return $this->role_id == Role::ADMIN_ROLE_ID;
+    }
 }

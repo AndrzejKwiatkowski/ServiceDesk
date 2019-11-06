@@ -11,7 +11,7 @@ class CommentController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth'); // przenieść
     }
     /**
      * Display a listing of the resource.
@@ -41,7 +41,12 @@ class CommentController extends Controller
      */
     public function store(Request $request, Ticket $ticket)
     {
-
+        /**
+         * walidacja
+         *
+         * plus przenieść logikę do servicu CommentService, analogicznie do TicketService
+         *
+         */
         $comment = new Comment();
 
         $comment->body = $request['body'];

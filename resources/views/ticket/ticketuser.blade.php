@@ -23,6 +23,7 @@
         <td>{{$ticket->id}}</td>
         <td>{{$ticket->user->name}}</td>
         <td>{{str_limit($ticket->title, 25)}}</td>
+          {{--  co to za deprecated funkcja? nie używaj jej, to lepsze -> https://laravel.com/api/5.8/Illuminate/Support/Str.html --}}
         <td>{{str_limit($ticket->body, 50)}}</td>
         <td class="{{$ticket->status == 'open' ? 'text-primary' : 'text-danger'}}">{{$ticket->status}}</td>
         <td class="">{{$ticket->priorytet}}</td>

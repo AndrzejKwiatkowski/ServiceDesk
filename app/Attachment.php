@@ -12,7 +12,7 @@ class Attachment extends Model
         'name'
     ];
 
-    public function user(){
+    public function user(){ // po co ta relacja?
         return $this->belongsTo(User::class);
     }
 

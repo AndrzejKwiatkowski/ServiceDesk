@@ -27,6 +27,7 @@ class StoreTicket extends FormRequest
             'title' => 'required|min:8|max:255',
             'body' => 'required|min:16|max:1000',
         ];
+        // tu chyba brakuje priorytet
     }
     public function messages()
     {
