@@ -10,7 +10,7 @@ use App\Solution;
 
 class Ticket extends Model
 {
-    protected $fillable = ['title', 'body', 'priorytet', 'status', 'user_id', 'solution_id', 'inProgressby'];
+    protected $fillable = ['title', 'body', 'priorytet', 'status', 'user_id', 'inProgressby']; // priorytet do zmiany na ang, inProgressby to myląca nazwa
 
     public function user()
     {
@@ -24,11 +24,11 @@ class Ticket extends Model
     {
         return $this->hasMany(Attachment::class);
     }
-    public function solutions()
+    public function solution()
     {
         return $this->hasOne(Solution::class);
     }
-    public function progress()
+    public function ownedBy()
     {
         return $this->belongsTo(User::class, 'inProgressby', 'id');
     }

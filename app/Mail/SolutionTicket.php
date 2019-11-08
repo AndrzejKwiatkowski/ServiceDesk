@@ -38,6 +38,6 @@ class SolutionTicket extends Mailable
      */
     public function build()
     {
-        return $this->from('andrzej@example.com')->view('mail.solutionTicket')->with('tickSol');
+        return $this->from('andrzej@example.com')->view('mail.solutionTicket')->with('tickSol'); // skoro przekazujesz tylko tickSol to po co w ogóle ticket wrzucacsz do konstruktora?
     }
 }
