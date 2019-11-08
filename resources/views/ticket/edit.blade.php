@@ -1,5 +1,14 @@
 @extends('layouts.app')
 @section('content')
+@if ($errors->any())
+<div class="col-4 alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 <div class="container col-6">
     <form id="formticketedit" method="POST" action="{{route('tickets.update', $ticket)}}">
         {{ csrf_field() }}
@@ -9,7 +18,7 @@
             <label for="exampleFormControlInput1">Title</label>
             <input type="input" name="title" value="{{$ticket->title}}" class="form-control" id="exampleFormControlInput1"
             data-parsley-required
-            data-parsley-minlength="16"
+            data-parsley-minlength="8"
             data-parsley-maxlength="255">
         </div>
         <div class="form-group">

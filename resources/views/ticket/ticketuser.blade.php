@@ -23,12 +23,12 @@
         <td>{{$ticket->id}}</td>
         <td>{{$ticket->user->name}}</td>
         <td>{{str_limit($ticket->title, 25)}}</td>
+          {{--  co to za deprecated funkcja? nie używaj jej, to lepsze -> https://laravel.com/api/5.8/Illuminate/Support/Str.html --}}
         <td>{{str_limit($ticket->body, 50)}}</td>
         <td class="{{$ticket->status == 'open' ? 'text-primary' : 'text-danger'}}">{{$ticket->status}}</td>
         <td class="">{{$ticket->priorytet}}</td>
         <td >{{$ticket->created_at}}</td>
         <td >{{$ticket->updated_at}}</td>
-        {{-- <td><button href="{{url('tickets/' . $ticket->id)}})" class="btn btn-primary">Otwórz</button></td> --}}
         <td><a class="btn btn-outline-dark" href="{{url('tickets/' . $ticket->id)}}" role="button">Open
         </a></td>
     </tr>

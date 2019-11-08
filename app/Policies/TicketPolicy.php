@@ -19,7 +19,8 @@ class TicketPolicy
      */
     public function view(User $user, Ticket $ticket)
     {
-        if ($user->id === $ticket->user_id || $user->role_id === 1) {
+        if ($user->id === $ticket->user_id || $user->role_id === 1) { // isAdmin i dołżyłbym metode isMe($user),
+            // która sprawdza w środku czy id usera jest aktualnie zalogowanym userem
             return true;
         } else {
             return abort(403, "Nie masz uprawnień do wyświetania zgłoszeń innych użytkowników.");
@@ -48,7 +49,7 @@ class TicketPolicy
     public function update(User $user, Ticket $ticket)
     {
 
-        if($user->id === $ticket->user_id || $user->role_id === 1){
+        if($user->id === $ticket->user_id || $user->role_id === 1){ // jak wyżej
             return true;
         }
         else{

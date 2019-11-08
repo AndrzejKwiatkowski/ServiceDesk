@@ -9,21 +9,21 @@
     </ul>
 </div>
 @endif
-@if (Auth::user()->role_id === 1)
+@if (Auth::user()->role_id === 1) <!-- isAdmin() -->
 <div class="container">
     <div class="row">
 
         <div class="col-2">
 
-            <form method="POST" action="/tickets/{{$ticket->id}}/change">
+            <form method="POST" action="{{url("/tickets/$ticket->id/change")}}">
                 {{ csrf_field() }}
                 {{ method_field('put') }}
-                @if($ticket->status == 'open' || $ticket->status == 'in progress')
+                @if($ticket->status == 'open' || $ticket->status == 'in progress') <!-- te wszystkie sprawdzania powinny być w metodach modelu, na zasadzie isAdmin()  -->
                 <button type="submit" name="status" value="In progress" class="btn btn-block btn-outline-secondary btn-sm mt-1">
                     Assign to me
                 </button>
                 @endif
-                @if($ticket->status == 'closed' ||$ticket->status == 'In progress'  || $ticket->solution_id == 'NULL')
+                @if($ticket->status == 'closed' ||$ticket->status == 'In progress'  || $ticket->solution_id == 'NULL') <!-- jak wyżej  -->
                 <button type="submit" name="status" value="open" class="btn btn-block  btn-outline-secondary btn-sm mt-1">
                     Return to the pool
                 </button>
@@ -31,7 +31,7 @@
 
             </form>
 
-            @if($ticket->solution_id == 'NULL' ||$ticket->status == 'In progress'  || $ticket->solution_id == 'NULL')
+            @if($ticket->solution_id == 'NULL' ||$ticket->status == 'In progress'  || $ticket->solution_id == 'NULL') <!-- jak wyżej  -->
             <a class="btn btn-block  btn-outline-secondary btn-sm mt-1" href="{{route('solutions.create', $ticket)}}"
             role="button">Add solution
         </a>
@@ -49,7 +49,7 @@
                 <p>Customer: {{$ticket->user->name}}</p>
                 <p>e-mail: {{$ticket->user->email}}</p>
                 <p class="text-right">Status: {{$ticket->status}}</p>
-                @if($ticket->status == 'closed' ||$ticket->status == 'In progress')
+                @if($ticket->status == 'closed' ||$ticket->status == 'In progress') <!-- jak wyżej  -->
                 @isset($ticket->progress->name)
                                 <p class="text-right">by: {{$ticket->progress->name}}</p>
                 @endisset
@@ -122,7 +122,7 @@
     <div class="row">
         <div class="col">
             <h3 class="mt-5">Comments</h3>
-            @foreach ($comments as $comment)
+            @foreach ($ticket->comments as $comment)
 
             <ul class="list-unstyled mt-5 col-md-offset-2 col-md-10">
                 <li class="media">
@@ -223,7 +223,7 @@
     <div class="row">
         <div class="col">
             <h5 class="mt-5">Comments</h5>
-            @foreach ($comments as $comment)
+            @foreach ($ticket->comments as $comment)
 
             <ul class="list-unstyled mt-5 col-md-offset-2 col-md-10">
                 <li class="media">
