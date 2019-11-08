@@ -74,7 +74,7 @@ class SolutionController extends Controller
         $ticket->solution()->save($solution);// 
         $ticket->update(request(['status']));
        
-        return redirect('tickets')->with('message', 'Zgłoszenie zostało zamknięte!');
+        return redirect('tickets')->with('message', 'Ticket has been closed!!');
 
 
     }

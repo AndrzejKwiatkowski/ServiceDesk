@@ -31,7 +31,7 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Ticket $tickets, Request $request, User $user) // $tickets, $request jest nieuzywany, $user jest tu kompletnie niepotrzebny
+    public function index(Ticket $tickets) // $tickets, $request jest nieuzywany, $user jest tu kompletnie niepotrzebny
     {
         /**
          * cała logika powinna byc podzielona na 2 cześci, niepotrzebnie pobierasz zawsze wszystkie tickety i tickety jednego usera.
@@ -45,10 +45,7 @@ class TicketController extends Controller
             return view('ticket.index', compact('tickets'));
         } else {
             return redirect()->route('ticketuser');
-            //return View::make('ticket.ticketuser')->with(array('user' => $user, 'tickets' => $ticketsu));
-            // user nie używasz w widoku, do wyrzucenia
-            // nie wiem czemu raz używasz helpera a raz fasady, ujednolić to,
-            // helper korzysta pod spodem z tej fasady
+           
         }
     }
 

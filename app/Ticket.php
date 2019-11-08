@@ -10,7 +10,7 @@ use App\Solution;
 
 class Ticket extends Model
 {
-    protected $fillable = ['title', 'body', 'priorytet', 'status', 'user_id', 'solution_id', 'inProgressby']; // priorytet do zmiany na ang, inProgressby to myląca nazwa
+    protected $fillable = ['title', 'body', 'priorytet', 'status', 'user_id', 'inProgressby']; // priorytet do zmiany na ang, inProgressby to myląca nazwa
 
     public function user()
     {
@@ -28,7 +28,7 @@ class Ticket extends Model
     {
         return $this->hasOne(Solution::class);
     }
-    public function ownedBy() // nazwałbym to inaczej, np ownedBy() albo coś w tym stylu, progress wskazuje na progres, a nie na to kto jest odpowiedzialny za ticket
+    public function ownedBy()
     {
         return $this->belongsTo(User::class, 'inProgressby', 'id');
     }

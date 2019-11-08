@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Services\TicketService;
 use App\Services\TicketServiceInterface;
+use App\Services\CommentService;
+use App\Services\CommentServiceInterface;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
@@ -29,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         $this->app->bind(TicketServiceInterface::class, TicketService::class);
+        $this->app->bind(CommentServiceInterface::class, CommentService::class);
         // to nie jest nic strasznego,
         // to znaczy tylko tyle, ze kiedykolwiek będę wołał o TicketServiceInterface to masz postawić TicketService,
         // jeżeli jesteś ciekawy to poczytaj o service containerach w laravelu,

@@ -12,13 +12,14 @@ use App\Services\CommentServiceInterface;
 
 class CommentController extends Controller
 {
-   
-    public function __construct()
+    protected $commentService;
+    public function __construct(CommentServiceInterface $commentService)
     {
-        
+        $this->commentService = $commentService;
         $this->middleware('auth'); // przenieść
     }
   
+    
    
     public function store(StoreComment $request, Ticket $ticket)
     {
@@ -28,20 +29,21 @@ class CommentController extends Controller
          *
          */
 
-//         $comment = $this->commentService->create($request->all());
-// dd($comment);
-//         if ($comment) {
-//             Auth::user()->comments()->save($comment);
-//         }
 
+
+$comment = $this->commentService->create([
     
+        'body' => $request['body'],
+        'user_id' => Auth::user()->id,
+        'ticket_id' => $ticket->id]);
         
-        $comment = new Comment();
+        if ($comment) {
 
-        $comment->body = $request['body'];
-        $comment->user_id = Auth::user()->id;
-        $comment->ticket_id = $ticket->id;
-        $comment->save();
+
+           Auth::user()->tickets()->save($comment);
+           
+        }
+    
         return back();
 
         
