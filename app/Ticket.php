@@ -24,11 +24,11 @@ class Ticket extends Model
     {
         return $this->hasMany(Attachment::class);
     }
-    public function solutions() // liczba pojedyncza
+    public function solution()
     {
         return $this->hasOne(Solution::class);
     }
-    public function progress() // nazwałbym to inaczej, np ownedBy() albo coś w tym stylu, progress wskazuje na progres, a nie na to kto jest odpowiedzialny za ticket
+    public function ownedBy() // nazwałbym to inaczej, np ownedBy() albo coś w tym stylu, progress wskazuje na progres, a nie na to kto jest odpowiedzialny za ticket
     {
         return $this->belongsTo(User::class, 'inProgressby', 'id');
     }

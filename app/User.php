@@ -62,4 +62,8 @@ class User extends Authenticatable
     {
         return $this->role_id == Role::ADMIN_ROLE_ID;
     }
+    public function isUser()
+    {
+        return $this->role_id == Role::USER_ROLE_ID;
+    }
 }

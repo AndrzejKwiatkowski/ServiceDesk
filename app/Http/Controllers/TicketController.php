@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\TicketServiceInterface;
 use App\Ticket;
+use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -39,14 +40,12 @@ class TicketController extends Controller
 
         $tickets = Ticket::with('user')->paginate(10);
 
-        $ticketsu = Ticket::where("user_id", "=", Auth::user()->id)->get();
-
-
         if (Auth::user()->isAdmin()) { // taka metoda to do modelu, napisałem Ci przykład w modelu, isAdmin(),
             // poza tym takie stałe inty jak np tutaj 1 zawsze do constów w modelu, przykład model Role
             return view('ticket.index', compact('tickets'));
         } else {
-            return View::make('ticket.ticketuser')->with(array('user' => $user, 'tickets' => $ticketsu));
+            return redirect()->route('ticketuser');
+            //return View::make('ticket.ticketuser')->with(array('user' => $user, 'tickets' => $ticketsu));
             // user nie używasz w widoku, do wyrzucenia
             // nie wiem czemu raz używasz helpera a raz fasady, ujednolić to,
             // helper korzysta pod spodem z tej fasady
@@ -98,13 +97,13 @@ class TicketController extends Controller
 //        $ticket->user_id = $request->user()->id;
 //        $ticket->save();
 
-        $ticket = $this->ticketService->create(array_merge($request->only('title', 'body', 'priorytet')));
+        //$ticket = $this->ticketService->create(array_merge($request->only('title', 'body', 'priorytet')));
+        $ticket = $this->ticketService->create($request->all());
 
         if ($ticket) {
             Auth::user()->tickets()->save($ticket);
         }
 
-        //  $ticket = Ticket::create($request->all()); // o, tu jest spoko
         return redirect('tickets');
     }
 
@@ -117,9 +116,8 @@ class TicketController extends Controller
     public function show(Ticket $ticket)
     {
         $this->authorize('view', $ticket); // przeniósłbym tą autoryzacje do middlewarów https://laravel.com/docs/5.8/authorization#via-middleware
-        $comments = $ticket->comments()->with('user')->get(); // tutaj wystraczy Ci zrobić ticket->load('comments')
-        // i nie potrzebujesz przekazywac drugiej zmiennej comments do widoku
-        return view('ticket.show', compact('ticket', 'comments'));
+        $ticket->load('comments');
+        return view('ticket.show', compact('ticket'));
     }
 
     /**
@@ -140,13 +138,16 @@ class TicketController extends Controller
      * @param  \App\Ticekt  $ticekt
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Ticket $ticket) // $request niepotrzebny
+    public function update( Request $request, Ticket $ticket)
     {
 
-        /**
-         *  brakuje tu walidacji
-         */
-
+        $this->validate($request,
+            [
+                'title' => 'required|min:8|max:255',
+                'body' => 'required|min:16|max:1000',
+            ]
+        );
+      
         $this->authorize('update', $ticket); // do middleware https://laravel.com/docs/5.8/authorization#via-middleware
         $ticket->update(request(['title', 'body', 'priorytet', 'user_id'])); // to do TicketService
         return redirect('/tickets');
@@ -155,17 +156,8 @@ class TicketController extends Controller
     public function ticketuser(User $user)
     {
 
-        /**
-         * rozumiem, że to ma wyświetlić wszystkie tickety zalogowanego użytkownika?
-         * w takim razie ten user w argumencie metody jest niepotrzebny
-         */
-
-        $userlogged = $user = Auth::user(); // po co tutaj to podwójne przypisanie? $loggedUser w zupełności wystarczy,
-        // jak piszesz nazwy zmiennych to rób to camel casem
-        // https://www.php-fig.org/psr/psr-1/
-        $tickets = Ticket::where("user_id", "=", $userlogged->id)->get();
-
-        return View::make('ticket.ticketuser')->with(array('user' => $user, 'tickets' => $tickets));
+        $tickets = Ticket::where("user_id", "=", Auth::user()->id)->get();
+        return view('ticket.ticketuser', compact('tickets'));
     }
     /**
      * Remove the specified resource from storage.
@@ -183,7 +175,7 @@ class TicketController extends Controller
         return redirect('/tickets');
     }
 
-    public function changestatus(Ticket $ticket, Request $request)
+    public function changestatus(Ticket $ticket)
     {
 
         /**
@@ -201,9 +193,6 @@ class TicketController extends Controller
          */
 
         $ticket->update(request(['status']));
-        $ticket = Ticket::find($ticket->id)
-            ->update(['inProgressby' => $request->user()->id]);
-
         return back();
     }
 }

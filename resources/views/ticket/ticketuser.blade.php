@@ -29,7 +29,6 @@
         <td class="">{{$ticket->priorytet}}</td>
         <td >{{$ticket->created_at}}</td>
         <td >{{$ticket->updated_at}}</td>
-        {{-- <td><button href="{{url('tickets/' . $ticket->id)}})" class="btn btn-primary">Otwórz</button></td> --}}
         <td><a class="btn btn-outline-dark" href="{{url('tickets/' . $ticket->id)}}" role="button">Open
         </a></td>
     </tr>

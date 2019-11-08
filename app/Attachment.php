@@ -13,6 +13,7 @@ class Attachment extends Model
     ];
 
     public function user(){ // po co ta relacja?
+        // To samo co w comment czyli dzieki tej relacji wyciągam kto dodał załącznik. Nie ma jeszcze tego w widoku ale taki jest zamiar.
         return $this->belongsTo(User::class);
     }
 

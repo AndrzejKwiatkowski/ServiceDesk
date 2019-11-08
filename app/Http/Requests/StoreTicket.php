@@ -32,13 +32,7 @@ class StoreTicket extends FormRequest
     public function messages()
     {
          return [
-        //     'title.required' => 'Pole wymagane.',
-        //     'title.min' => 'Wymagana ilość znaków 16.',
-        //     'title.max' => 'Maksymalna ilość znaków 255.',
-
-        //     'body.required' => 'Pole wymagane.',
-        //     'body.min' => 'Wymagana ilość znaków 16.',
-        //     'body.max' => 'Maksymalna ilość znaków 1000.',
+        
          ];
     }
 }

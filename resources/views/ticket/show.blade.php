@@ -122,7 +122,7 @@
     <div class="row">
         <div class="col">
             <h3 class="mt-5">Comments</h3>
-            @foreach ($comments as $comment)
+            @foreach ($ticket->comments as $comment)
 
             <ul class="list-unstyled mt-5 col-md-offset-2 col-md-10">
                 <li class="media">

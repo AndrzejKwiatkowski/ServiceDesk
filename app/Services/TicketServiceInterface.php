@@ -8,5 +8,5 @@ interface TicketServiceInterface
 {
 
     public function create(array $data): Ticket;
-
+    
 }
