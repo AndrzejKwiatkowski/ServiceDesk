@@ -15,8 +15,8 @@ class SolutionTicket extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $ticket;
-    public $tickSol;
+    public $solution;
+   
 
 
     /**
@@ -24,10 +24,10 @@ class SolutionTicket extends Mailable
      *
      * @return void
      */
-    public function __construct($ticket, $tickSol)
+    public function __construct($solution)
     {
-        $this->ticket = $ticket;
-        $this->tickSol = $tickSol;
+        $this->solution = $solution;
+      
 
     }
 
@@ -38,6 +38,7 @@ class SolutionTicket extends Mailable
      */
     public function build()
     {
-        return $this->from('andrzej@example.com')->view('mail.solutionTicket')->with('tickSol'); // skoro przekazujesz tylko tickSol to po co w ogóle ticket wrzucacsz do konstruktora?
+        
+        return $this->from('akwiatkowski.pl@gmail.com')->view('mail.solutionTicket')->with('solution'); // skoro przekazujesz tylko tickSol to po co w ogóle ticket wrzucacsz do konstruktora?
     }
 }

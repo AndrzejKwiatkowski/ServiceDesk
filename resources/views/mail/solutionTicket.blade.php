@@ -10,9 +10,10 @@
 
 <body>
     <h1>Service Desk</h1>
-    Ticket number: {{$tickSol->ticket_id}} <br />
-    Description: {{$tickSol->solution}} <br>
-    Operator: {{$tickSol->solutionn->progress->name}}, {{$tickSol->solutionn->progress->email}}
+    Ticket number: {{$solution->ticket_id}} <br>
+    Description: {{$solution->solution}} <br>
+    Operator: {{$solution->user->email}}<br>
+    Status: {{$solution->ticket->status}}
 
 </body>
 

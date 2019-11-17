@@ -30,6 +30,6 @@ class Ticket extends Model
     }
     public function ownedBy()
     {
-        return $this->belongsTo(User::class, 'inProgressby', 'id');
+        return $this->belongsTo(User::class,'id','inProgressby');
     }
 }

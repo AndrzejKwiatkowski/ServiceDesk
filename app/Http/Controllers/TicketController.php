@@ -31,7 +31,7 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Ticket $tickets) // $tickets, $request jest nieuzywany, $user jest tu kompletnie niepotrzebny
+    public function index() // $tickets, $request jest nieuzywany, $user jest tu kompletnie niepotrzebny
     {
         /**
          * cała logika powinna byc podzielona na 2 cześci, niepotrzebnie pobierasz zawsze wszystkie tickety i tickety jednego usera.
