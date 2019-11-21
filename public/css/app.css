@@ -10649,9 +10649,14 @@ p {
   font-weight: bold;
 }
 
-div#myTable_filter {
+div #myTable_length {
   float: left;
-  margin-top: 7px;
+  margin-top: 10px;
+}
+
+div#myTable_filter {
+  float: right;
+  margin-top: 10px;
 }
 
 div.media-body,

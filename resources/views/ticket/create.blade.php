@@ -14,12 +14,7 @@
     <form method="POST" id="formticket" action="{{ url('/tickets') }}" parsley-validate>
         {{csrf_field()}}
 
-        <!-- użyj tego do formularzy, na pewno zrobi większe wrażenie,
-            a poza tym będziesz miał jakąś zewnętrzną paczkę w composerze,
-            na propsie będzie bardziej.
-
-            https://laravelcollective.com/docs/5.8/html
-        -->
+     
 
         <div class="form-group">
             <label for="exampleFormControlInput1">Title</label>

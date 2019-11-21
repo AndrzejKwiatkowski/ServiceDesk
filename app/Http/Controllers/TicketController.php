@@ -20,32 +20,28 @@ class TicketController extends Controller
 
     protected $ticketService;
 
-    public function __construct(TicketServiceInterface $ticketService) // czemu tak to wytłumaczyłem w AppServiceProvider
+    public function __construct(TicketServiceInterface $ticketService) 
     {
         $this->ticketService = $ticketService;
 
-        $this->middleware('auth'); // to do middlewarera w folderze Http i podpinasz go do routea
+        $this->middleware('auth'); // to do middlewarera 
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() // $tickets, $request jest nieuzywany, $user jest tu kompletnie niepotrzebny
+    public function index()
     {
-        /**
-         * cała logika powinna byc podzielona na 2 cześci, niepotrzebnie pobierasz zawsze wszystkie tickety i tickety jednego usera.
-         * kiedy jestes adminem pobierz wszystko i przekaz do widoku, a kiedy jestes userem pobierz tylko usera
-         */
-
-        $tickets = Ticket::with('user')->paginate(10);
-
-        if (Auth::user()->isAdmin()) { // taka metoda to do modelu, napisałem Ci przykład w modelu, isAdmin(),
-            // poza tym takie stałe inty jak np tutaj 1 zawsze do constów w modelu, przykład model Role
-            return view('ticket.index', compact('tickets'));
+    
+        $tickets = Ticket::with('user')->get();
+        $ticketsUser = Ticket::where("user_id", "=", Auth::user()->id)->get();
+        
+        if (Auth::user()->isAdmin()) { 
+            return view('ticket.admin.index', compact('tickets'));
         } else {
-            return redirect()->route('ticketuser');
-           
+            return view('ticket.user.index', compact('ticketsUser'));
+        
         }
     }
 
@@ -67,34 +63,7 @@ class TicketController extends Controller
      */
     public function store(StoreTicket $request)
     {
-        /**
-         * to robić lepiej przez metode create na modelu
-         * Ticket::create([
-         *      'tilte' => $request->title itd
-         * ]);
-         *
-         * chyba, ze chcesz triggerować observery, ale nie widzę żebyś je miał.
-         * różnica jest taka, że jak masz mass assignment jak przy metodach update i create to działa to szybciej, bo
-         * 1. nie tworzysz instancji obiektu
-         * 2. wysyłasz gołe zapytanie do mysql bez pobrania rekordu
-         *
-         *
-         * cały ten kod powinien być przeniesiony do następnej warstwy abstrakcji, czyli do jakiegoś servicu typu TicketService,
-         * bo co się stanie jak w jakimś innym miejscu aplikacji będziesz też tworzył ticket, wtedy musisz powielić ten kod,
-         * a wtedy jak np kiedyś w przyszłości dojdzie Ci kolejna propercja w modelu np. to jak długo ticket jest ważny,
-         * to będziesz musiał znaleść wszystkie miejsca gdzie tworzysz ticket i tam to zmienić.
-         *
-         * napisałem Ci przykład.
-         */
-
-//        $ticket = new Ticket();
-//        $ticket->title = $request['title'];
-//        $ticket->body = $request['body'];
-//        $ticket->priorytet = $request['priorytet'];
-//        $ticket->user_id = $request->user()->id;
-//        $ticket->save();
-
-        //$ticket = $this->ticketService->create(array_merge($request->only('title', 'body', 'priorytet')));
+       
         $ticket = $this->ticketService->create($request->all());
 
         if ($ticket) {
@@ -112,9 +81,15 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        $this->authorize('view', $ticket); // przeniósłbym tą autoryzacje do middlewarów https://laravel.com/docs/5.8/authorization#via-middleware
+        $this->authorize('view', $ticket); //  autoryzacje do middlewarów https://laravel.com/docs/5.8/authorization#via-middleware
         $ticket->load('comments');
-        return view('ticket.show', compact('ticket'));
+        if (Auth::user()->isAdmin()) {
+            return view('ticket.admin.show', compact('ticket'));
+        }
+        else {
+            return view('ticket.user.show', compact('ticket'));
+        }
+       
     }
 
     /**
@@ -153,8 +128,13 @@ class TicketController extends Controller
     public function ticketuser(User $user)
     {
 
-        $tickets = Ticket::where("user_id", "=", Auth::user()->id)->get();
-        return view('ticket.ticketuser', compact('tickets'));
+       
+        $ticketsUser = Ticket::where("user_id", "=", Auth::user()->id)->paginate(10);
+
+        if (Auth::user()){ 
+            return view('ticket.user.index', compact('ticketsUser'));
+              
+        }
     }
     /**
      * Remove the specified resource from storage.
@@ -174,21 +154,7 @@ class TicketController extends Controller
 
     public function changestatus(Ticket $ticket)
     {
-
-        /**
-         * tutaj brakuje walidacji
-         *
-         * robisz tu dziwną rzecz, najpierw updatujesz w tickecie pole status (o ile to w ogóle zadziała), nie jestem pewien,
-         * następnie wyszukujesz ponownie ticket, który już masz w ręku i dopiero wtedy updatujesz inProgressBy,
-         * co by jeszcze bylo zabawniej, masz request wstrzyknięty w metode, a używasz helpera
-         *
-         * jak to powinno byc zrobione to w modelu Ticket powinienes utworzyc metode typu,
-         * assignOwner($user) (nie wiem czy nazwa jest najbardziej odpowiednia, pewnie nie)
-         * i w środku obsłużyć przydzielanie usera i zmiane statusu.
-         * Warto zauważyć, że status chyba w tym przypadku będzie zawsze 'in progress' więc nie wiem po co brać to z requestu, chyba, że się myle
-         *
-         */
-
+  
         $ticket->update(request(['status']));
         return back();
     }

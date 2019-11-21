@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     @auth
-    @if(Auth::user()->role_id === 1)
+    @if(Auth::user()->isAdmin())
     <a class="navbar-brand" href="{{route('tickets.index')}}">Service Desk</a>
     @else
     <a class="navbar-brand" href="{{url('tickets/my-tickets/') }}">Service Desk</a>
@@ -54,10 +54,10 @@
                                                      document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}
                         </a>
-                        @if (Auth::user()->role_id === 1)
+                        @if (Auth::user()->isAdmin())
                         <a class="dropdown-item" href="{{url('tickets/my-tickets') }}">My
                             tickets</a>
-                        <a class="dropdown-item" href="{{url('tickets')}}">All tickets</a>
+                        <a class="dropdown-item" href="{{route('tickets.index')}}">All tickets</a>
                         @else
 
                         <a class="dropdown-item" href="{{url('tickets/my-tickets/') }}">

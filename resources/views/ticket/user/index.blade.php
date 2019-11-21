@@ -26,7 +26,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($tickets as $ticket)
+        @foreach ($ticketsUser as $ticket)
         <tr>
             <td>{{$ticket->id}}</td>
             <td>{{$ticket->user->name}}</td>
@@ -49,7 +49,7 @@
 
     </tbody>
 </table>
-{{ $tickets->links() }}
+
 
 
 
@@ -60,12 +60,14 @@
 <script>
     $(document).ready( function () {
     $('#myTable').DataTable({
-        "paging": false,
-        "info": false,
+      
+        "columnDefs": [
+    { "orderable": false, "targets": 8 }
+  ]
+  
 
     });
-
-} );
+});
 </script>
 <script>
     setTimeout(function() {
@@ -74,8 +76,8 @@
 </script>
 
 @endsection
-{{-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> --}}
+
+
 
 
 

@@ -16,6 +16,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 class SolutionAdded
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+    public $solution;
 
     /**
      * Create a new event instance.

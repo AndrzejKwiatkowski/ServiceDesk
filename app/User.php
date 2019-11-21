@@ -51,7 +51,7 @@ class User extends Authenticatable
     }
     public function roles()
     {
-        return $this->hasMany(Role::class);
+        return $this->hasOne(Role::class);
     }
     public function owneds()
     {
@@ -62,8 +62,5 @@ class User extends Authenticatable
     {
         return $this->role_id == Role::ADMIN_ROLE_ID;
     }
-    public function isUser()
-    {
-        return $this->role_id == Role::USER_ROLE_ID;
-    }
+ 
 }

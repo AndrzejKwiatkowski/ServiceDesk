@@ -23,15 +23,8 @@ class CommentController extends Controller
    
     public function store(StoreComment $request, Ticket $ticket)
     {
-        /**
-                *
-         * plus przenieść logikę do servicu CommentService, analogicznie do TicketService
-         *
-         */
 
-
-
-$comment = $this->commentService->create([
+        $comment = $this->commentService->create([
     
         'body' => $request['body'],
         'user_id' => Auth::user()->id,

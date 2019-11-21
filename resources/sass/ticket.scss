@@ -4,14 +4,16 @@ p{
 
 }
 
-
-
-div#myTable_filter{
+div #myTable_length {
     float: left;
-    margin-top: 7px;
-    // margin-left: 200px;
-    // position: absolute;
-    // color: white;
+    margin-top: 10px;
+   
+}
+
+div#myTable_filter {
+    float: right;
+    margin-top: 10px;
+   
 }
 div.media-body,h5.mt-0.mb-1, h6.mt-0.mb-1
 {
