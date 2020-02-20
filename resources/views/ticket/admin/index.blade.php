@@ -10,6 +10,9 @@
 </div>
 
 @endif()
+<div class="table-responsive-md">
+
+</div>
 
 <table id="myTable" class="table">
     <thead class="thead-primary">
@@ -28,7 +31,7 @@
     <tbody>
         @foreach ($tickets as $ticket)
         <tr>
-            <td>{{$ticket->id}}</td>
+            <th scope="row">{{$ticket->id}}</th>
             <td>{{$ticket->user->name}}</td>
             <td>{{str_limit($ticket->title, 25)}}</td>
             <td>{{str_limit($ticket->body, 50)}}</td>
@@ -49,7 +52,7 @@
 
     </tbody>
 </table>
-
+</div>
 
 
 
@@ -76,9 +79,6 @@
 </script>
 
 @endsection
-{{-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> --}}
-
 
 
 
