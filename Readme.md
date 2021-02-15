@@ -8,6 +8,8 @@
 ## About Service Desk
 
 Service Desk is the apllictacion for tickets registration. Customer registration requests are handled by the application administrator. 
+
+
 Feature implemented:
 - tickets registration
 - adding attachments, comments
